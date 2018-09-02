@@ -4,12 +4,23 @@ import {
   MatToolbarModule,
   MatButtonModule,
   MatSidenavModule,
+  MatSnackBarModule,
   MatIconModule,
-  MatMenuModule, MatListModule, MatGridListModule, MatCardModule,
+  MatMenuModule,
+  MatListModule,
+  MatGridListModule,
+  MatCardModule,
 } from '@angular/material';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import {
+  PrivateLayoutComponent,
+  LayoutComponent,
+} from './layout/layout.component';
 import { NavComponent } from './nav/nav.component';
-import { AppRoutingModule } from '../app-routing.module';
+import { CoreRoutingModule } from './core-routing.module';
+import { AuthHttpInterceptor } from './auth/auth.interceptor';
+
 
 @NgModule({
   imports: [
@@ -22,13 +33,21 @@ import { AppRoutingModule } from '../app-routing.module';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    AppRoutingModule,
+    MatSnackBarModule,
+
+    CoreRoutingModule,
   ],
   exports: [
     NavComponent,
+    LayoutComponent,
   ],
   declarations: [
+    PrivateLayoutComponent,
+    LayoutComponent,
     NavComponent,
+  ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true}
   ],
 })
 export class CoreModule {

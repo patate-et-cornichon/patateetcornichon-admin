@@ -1,0 +1,28 @@
+@import '../../theme';
+
+$primary: map-get($theme, primary);
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: mat-color($primary);
+}
+
+.login-card {
+  min-width: 150px;
+  max-width: 300px;
+  padding: 45px;
+  width: 100%;
+
+  .login-field {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .mat-card-actions {
+    margin-bottom: 0;
+  }
+}

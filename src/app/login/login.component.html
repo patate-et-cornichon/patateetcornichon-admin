@@ -1,0 +1,31 @@
+<mat-card class="login-card">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-card-content>
+      <div>
+        <mat-form-field class="login-field">
+          <input matInput placeholder="Email" formControlName="email">
+          <mat-error
+            *ngIf="loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')"
+          >
+            Il faut rentrer un email valide.
+          </mat-error>
+          <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+            L'email est <strong>obligatoire</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="login-field">
+          <input placeholder="Mot de passe" matInput type="password" formControlName="password">
+          <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+            Le mot de passe est <strong>obligatoire</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="center center">
+      <button mat-stroked-button color="primary" [disabled]="!loginForm.valid || isSubmitted">SE CONNECTER</button>
+    </mat-card-actions>
+  </form>
+</mat-card>
+
