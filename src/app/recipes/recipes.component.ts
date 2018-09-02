@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSlideToggleChange, MatSnackBar, PageEvent } from '@angular/material';
+import { MatPaginator, MatSlideToggleChange } from '@angular/material';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { RecipesService } from './recipes.service';
 import { Recipe } from './recipe.interface';
+import { MessageService } from '../core/message/message.service';
+
 
 @Component({
   selector: 'app-recipes',
@@ -16,6 +18,7 @@ export class RecipesComponent implements OnInit {
     'created',
     'full_title',
     'categories',
+    'comments_count',
     'published',
   ];
   resultsLength = 0;
@@ -27,8 +30,9 @@ export class RecipesComponent implements OnInit {
 
   constructor(
     private recipesService: RecipesService,
-    private snackBar: MatSnackBar,
-  ) {}
+    private messageService: MessageService,
+  ) {
+  }
 
   ngOnInit() {
     this.initPaginator();
@@ -73,7 +77,7 @@ export class RecipesComponent implements OnInit {
     };
     this.recipesService.updateRecipe(recipeSlug, data)
       .subscribe(
-        () => this.snackBar.open('Recette publiée !')
+        () => this.messageService.showMessage('Recette mise à jour !')
       );
   }
 }

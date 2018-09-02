@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../core/auth/auth.service';
-import { MessageService } from '../core/messages/messages.service';
+import { MessageService } from '../core/message/message.service';
 
 
 @Component({
@@ -36,16 +36,11 @@ export class LoginComponent {
    */
   onSubmit() {
     this.isSubmitted = true;
-    this.authService.getTokenFromServer(this.loginForm.value)
+    this.authService
+      .login(this.loginForm.value)
       .subscribe(
-        data => {
-          this.authService.setToken(data.token);
-          this.router.navigate(['/']);
-        },
-        () => {
-          this.messageService.showMessage('Une erreur est survenue');
-          this.isSubmitted = false;
-        }
+        () => this.router.navigate(['/']),
+        () => this.isSubmitted = false,
       );
   }
 }

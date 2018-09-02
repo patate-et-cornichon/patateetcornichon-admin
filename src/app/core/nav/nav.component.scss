@@ -5,10 +5,42 @@
 .sidenav-container {
   height: 100%;
   background: transparent;
-}
 
-.sidenav {
-  width: 250px;
+  .sidenav {
+    width: 250px;
+
+    .nav-title {
+      text-transform: uppercase;
+      font-size: 1em;
+    }
+
+    .user-box {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      margin: 20px 15px 0px;
+      padding-bottom: 20px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+
+      .user-name {
+        font-weight: bold;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .welcome-message {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    font-weight: lighter;
+  }
 }
 
 .mat-toolbar.mat-primary {

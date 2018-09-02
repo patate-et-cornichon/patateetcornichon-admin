@@ -9,14 +9,23 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(public auth: AuthService, public router: Router) {}
+  constructor(public authService: AuthService, public router: Router) {}
 
+  /**
+   * Check if the user is authenticated and is staff
+   */
   canActivate(): boolean {
-    if (!this.auth.isAuthenticated) {
+    if (!this.authService.isAuthenticated) {
       this.router.navigate(['login']);
       return false;
+    } else {
+      const user = this.authService.getUser();
+      if (!user.is_staff) {
+        this.authService.logout();
+        this.router.navigate(['login']);
+        return false;
+      }
     }
     return true;
   }
-
 }

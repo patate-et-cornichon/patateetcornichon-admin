@@ -37,6 +37,7 @@ export interface Recipe {
   ingredients: Ingredient[];
   categories: Category[];
   tags: Tag[];
+  comments_count: number;
   meta_description: string;
 }
 
