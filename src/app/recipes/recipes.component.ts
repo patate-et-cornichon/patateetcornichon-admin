@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSlideToggleChange } from '@angular/material';
+import { MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
+import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
 import { RecipesService } from './recipes.service';
 import { Recipe } from './recipe.interface';
 import { MessageService } from '../core/message/message.service';
@@ -20,6 +21,7 @@ export class RecipesComponent implements OnInit {
     'categories',
     'comments_count',
     'published',
+    'actions',
   ];
   resultsLength = 0;
   pageSize = 0;
@@ -31,6 +33,7 @@ export class RecipesComponent implements OnInit {
   constructor(
     private recipesService: RecipesService,
     private messageService: MessageService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -80,4 +83,30 @@ export class RecipesComponent implements OnInit {
         () => this.messageService.showMessage('Recette mise à jour !')
       );
   }
+
+  deleteRecipe(recipe: Recipe) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Supprimer ?',
+        content: `Confirmes-tu la supression de la recette <strong>${recipe.full_title}</strong> ?`,
+      }
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe(result => {
+          if (result) {
+            this.recipesService
+              .deleteRecipe(recipe.slug)
+              .subscribe(
+                () => {
+                  this.messageService.showMessage('Recette supprimée !');
+                  this.data = this.data.filter(e => e.slug !== recipe.slug);
+                }
+              );
+          }
+        }
+      );
+  }
 }
+

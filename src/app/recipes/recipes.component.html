@@ -1,4 +1,12 @@
-<h1 class="mat-h1">Recettes</h1>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="custom-toolbar">
+  <h1 class="mat-h1">Recettes</h1>
+  <a href="#">
+    <button mat-mini-fab color="accent">
+      <mat-icon aria-label="Ajouter une recette">add</mat-icon>
+    </button>
+  </a>
+</div>
+
 <div class="list-container mat-elevation-z8">
   <div class="list-loading-shade" *ngIf="isLoadingResults">
     <mat-spinner></mat-spinner>
@@ -49,6 +57,21 @@
             (change)="togglePublished($event, row.slug)"
           >
           </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <a href="#">
+            <button mat-icon-button color="primary">
+              <mat-icon aria-label="Voir">remove_red_eye</mat-icon>
+            </button>
+          </a>
+          <button mat-icon-button color="warn" (click)="deleteRecipe(row)">
+            <mat-icon aria-label="Supprimer">delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 

@@ -32,6 +32,16 @@ export class RecipesService {
    */
   updateRecipe(recipeSlug: string, data: object): Observable<Recipe> {
     return this.http
-      .patch<Recipe>(`${environment.baseUrl}/recipes/${recipeSlug}`, data);
+      .patch<Recipe>(`${environment.baseUrl}/recipes/${recipeSlug}/`, data);
+  }
+
+  /**
+   * DELETE: delete a recipe from server
+   *
+   * @param recipeSlug
+   */
+  deleteRecipe(recipeSlug: string): Observable<null> {
+    return this.http
+      .delete<null>(`${environment.baseUrl}/recipes/${recipeSlug}/`);
   }
 }
