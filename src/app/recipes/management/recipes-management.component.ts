@@ -3,8 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
+import slugify from 'slugify';
 
-import { Category, Tag } from '../recipes.interface';
+import { Category } from '../recipes.interface';
 import { RecipesService } from '../recipes.service';
 import { map, startWith } from 'rxjs/operators';
 
@@ -158,5 +159,14 @@ export class RecipesManagementComponent implements OnInit {
         tag = tag.toLocaleLowerCase();
         return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
       });
+  }
+
+  /**
+   * Change the slug field value according to the full title field
+   */
+  changeSlug(): void {
+    const fullTitleValue = this.firstFormGroup.controls['full_title'].value.toLowerCase();
+    const slugifiedTitle = slugify(fullTitleValue);
+    this.firstFormGroup.controls['slug'].setValue(slugifiedTitle);
   }
 }

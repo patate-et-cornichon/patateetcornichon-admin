@@ -16,7 +16,7 @@
           </mat-form-field>
         </div>
         <mat-form-field>
-          <input matInput placeholder="Titre complet" formControlName="full_title" required>
+          <input matInput (keyup)="changeSlug()" placeholder="Titre complet" formControlName="full_title" required>
         </mat-form-field>
 
         <!-- Slug field -->
