@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatSnackBarModule,
   MatProgressSpinnerModule,
@@ -10,19 +11,28 @@ import {
   MatCardModule,
   MatIconModule,
   MatButtonModule,
-  MatDialogModule,
+  MatStepperModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatAutocompleteModule,
+  MatChipsModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { RecipesComponent } from './recipes.component';
+import { RecipesManagementComponent } from './management/recipes-management.component';
 import { RecipesRoutingModule } from './recipes.routing';
 import { RecipesService } from './recipes.service';
-import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
+import { DialogsModule } from '../shared/dialogs/dialogs.module';
+import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTableModule,
@@ -32,17 +42,21 @@ import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dial
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatDialogModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatChipsModule,
     FlexLayoutModule,
 
     RecipesRoutingModule,
-  ],
-  entryComponents: [
-    ConfirmationDialogComponent,
+    DialogsModule,
+    MatFileInputModule,
   ],
   declarations: [
     RecipesComponent,
-    ConfirmationDialogComponent,
+    RecipesManagementComponent,
   ],
   providers: [
     RecipesService

@@ -1,0 +1,94 @@
+<h1 class="mat-h1">Ajouter une recette</h1>
+
+<mat-vertical-stepper #stepper>
+  <!-- First step -->
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Général</ng-template>
+      <div fxLayout="column">
+        <!-- Full Title fields -->
+        <div fxLayout="row" fxLayoutGap="40px">
+          <mat-form-field fxFlex="1 1 auto">
+            <input matInput placeholder="Titre" formControlName="title" required>
+          </mat-form-field>
+          <mat-form-field fxFlex="1 1 auto">
+            <input matInput placeholder="Sous-titre" formControlName="sub_title" required>
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <input matInput placeholder="Titre complet" formControlName="full_title" required>
+        </mat-form-field>
+
+        <!-- Slug field -->
+        <mat-form-field>
+          <input matInput placeholder="Slug" formControlName="slug" required>
+        </mat-form-field>
+
+        <!-- Categories Field -->
+        <mat-form-field>
+          <mat-select placeholder="Catégories" formControlName="categories" multiple required>
+            <mat-option *ngFor="let category of categoryList" [value]="category.id">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Tags field -->
+        <mat-form-field>
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let tag of tags"
+              [selectable]="true"
+              [removable]="true"
+              (removed)="removeTag(tag)">
+              {{ tag }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Tags"
+              #tagInput
+              formControlName="tags"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="false"
+              (matChipInputTokenEnd)="addTag($event)">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{ tag }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- Images fields -->
+        <div fxLayout="row" fxLayoutGap="40px">
+          <mat-form-field fxFlex="1 1 auto">
+            <app-mat-file-input formControlName="main_picture" placeholder="Image principale" required></app-mat-file-input>
+          </mat-form-field>
+          <mat-form-field fxFlex="1 1 auto">
+            <app-mat-file-input formControlName="secondary_picture" placeholder="Image secondaire"></app-mat-file-input>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <button mat-stroked-button matStepperNext>Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Informations de la recette</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Pour..." formControlName="goal" required>
+      </mat-form-field>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious>Précédent</button>
+          <button mat-stroked-button matStepperNext>Suivant</button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+</mat-vertical-stepper>

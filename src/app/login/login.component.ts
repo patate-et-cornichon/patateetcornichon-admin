@@ -12,15 +12,6 @@ import { MessageService } from '../core/message/message.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  isSubmitted = false;
-
-  constructor(
-    private authService: AuthService,
-    private messageService: MessageService,
-    private router: Router,
-  ) {
-  }
-
   loginForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
@@ -30,6 +21,14 @@ export class LoginComponent {
       Validators.required,
     ]),
   });
+  isSubmitted = false;
+
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+    private router: Router,
+  ) {
+  }
 
   /**
    * Submit credentials to the auth service

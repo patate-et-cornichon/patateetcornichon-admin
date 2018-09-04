@@ -5,7 +5,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
 import { RecipesService } from './recipes.service';
-import { Recipe } from './recipe.interface';
+import { Recipe } from './recipes.interface';
 import { MessageService } from '../core/message/message.service';
 
 
@@ -84,7 +84,13 @@ export class RecipesComponent implements OnInit {
       );
   }
 
+  /**
+   * Delete recipe from server and update recipes data
+   *
+   * @param recipe
+   */
   deleteRecipe(recipe: Recipe) {
+    // Open a confirmation dialog
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: 'Supprimer ?',
@@ -92,6 +98,7 @@ export class RecipesComponent implements OnInit {
       }
     });
 
+    // Update list after recipe is deleted
     dialogRef
       .afterClosed()
       .subscribe(result => {
