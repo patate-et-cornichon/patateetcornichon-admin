@@ -65,7 +65,8 @@
         <!-- Images fields -->
         <div fxLayout="row" fxLayoutGap="40px">
           <mat-form-field fxFlex="1 1 auto">
-            <app-mat-file-input formControlName="main_picture" placeholder="Image principale" required></app-mat-file-input>
+            <app-mat-file-input formControlName="main_picture" placeholder="Image principale"
+                                required></app-mat-file-input>
           </mat-form-field>
           <mat-form-field fxFlex="1 1 auto">
             <app-mat-file-input formControlName="secondary_picture" placeholder="Image secondaire"></app-mat-file-input>
@@ -156,6 +157,118 @@
   <!-- Fourth step -->
   <mat-step [stepControl]="fourthGroup">
     <form [formGroup]="fourthGroup">
+      <ng-template matStepLabel>Composition</ng-template>
+      <div formArrayName="composition" fxLayout="column">
+        <mat-card fxLayout="column"
+                  class="mat-elevation-10 composition-item"
+                  *ngFor="let compositionItem of composition.controls; index as compositionIndex"
+                  [formGroup]="compositionItem"
+        >
+          <div class="composition-controls">
+            <button
+              mat-button color="warn"
+              *ngIf="compositionIndex !== 0"
+              (click)="removeComposition(compositionIndex)"
+            >
+              SUPPRIMER
+            </button>
+            <button mat-button (click)="addComposition()">AJOUTER</button>
+          </div>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Nom de la composition" formControlName="name">
+          </mat-form-field>
+          <div fxLayout="column" formArrayName="ingredients">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="40px"
+              *ngFor="let ingredient of getIngredients(compositionIndex).controls; index as ingredientIndex"
+              [formGroup]="ingredient">
+              <mat-form-field fxFlex="1 1 auto">
+                <input matInput placeholder="Ingredient" formControlName="ingredient" required>
+              </mat-form-field>
+              <mat-form-field fxFlex="1 1 auto">
+                <input matInput placeholder="Unité" formControlName="unit">
+              </mat-form-field>
+              <mat-form-field fxFlex="1 1 auto">
+                <input type="number" matInput placeholder="Quantité" formControlName="quantity">
+              </mat-form-field>
+              <div fxFlex="1 1 100px">
+                <div fxLayout="row" fxLayoutAlign="end end">
+                  <button
+                    mat-icon-button
+                    *ngIf="ingredientIndex !== 0"
+                    (click)="removeIngredient(compositionIndex, ingredientIndex)"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="addIngredient(compositionIndex)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious>Précédent</button>
+          <button mat-stroked-button matStepperNext>Suivant</button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Fifth step -->
+  <mat-step [stepControl]="fifthGroup">
+    <form [formGroup]="fifthGroup">
+      <ng-template matStepLabel>Étapes</ng-template>
+      <div formArrayName="steps" fxLayout="column">
+        <div fxLayout="row"
+             fxLayoutAlign="center center"
+             fxLayoutGap="40px"
+             *ngFor="let step of steps.controls; index as i"
+        >
+          <mat-form-field fxFlex="1 1 auto">
+            <textarea
+              type="text"
+              [placeholder]="'Étape ' + (i + 1)"
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              [formControlName]="i">
+            </textarea>
+          </mat-form-field>
+          <div fxFlex="1 1 100px">
+            <div fxLayout="row" fxLayoutAlign="end end">
+              <button
+                type="button"
+                mat-icon-button
+                *ngIf="i !== 0"
+                (click)="removeStep(i)"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+              <button mat-icon-button (click)="addStep()" type="button">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious>Précédent</button>
+          <button mat-stroked-button matStepperNext>Suivant</button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Sixth step -->
+  <mat-step [stepControl]="sixthGroup">
+    <form [formGroup]="sixthGroup">
       <ng-template matStepLabel>SEO</ng-template>
       <div fxLayout="column">
         <mat-form-field>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -67,6 +67,22 @@ export class RecipesManagementComponent implements OnInit {
   });
 
   fourthGroup = new FormGroup({
+    composition: new FormArray([this.createComposition()], [
+      Validators.required,
+    ]),
+  });
+
+  fifthGroup = new FormGroup({
+    steps: new FormArray([
+      new FormControl('', [
+        Validators.required,
+      ]),
+    ], [
+      Validators.required,
+    ]),
+  });
+
+  sixthGroup = new FormGroup({
     meta_description: new FormControl('', [
       Validators.required,
     ])
@@ -190,5 +206,63 @@ export class RecipesManagementComponent implements OnInit {
     const fullTitleValue = this.firstFormGroup.controls['full_title'].value.toLowerCase();
     const slugifiedTitle = slugify(fullTitleValue);
     this.firstFormGroup.controls['slug'].setValue(slugifiedTitle);
+  }
+
+  // Step Management
+  get steps(): FormArray {
+    return this.fifthGroup.get('steps') as FormArray;
+  }
+
+  addStep() {
+    this.steps.push(new FormControl(''));
+  }
+
+  removeStep(index) {
+    this.steps.removeAt(index);
+  }
+
+  // Composition Management
+  get composition(): FormArray {
+    return this.fourthGroup.get('composition') as FormArray;
+  }
+
+  addComposition() {
+    this.composition.push(this.createComposition());
+  }
+
+  createComposition() {
+    return new FormGroup({
+      name: new FormControl(''),
+      ingredients: new FormArray([this.createIngredient()], [
+        Validators.required,
+      ]),
+    });
+  }
+
+  removeComposition(index: number) {
+    this.composition.removeAt(index);
+  }
+
+  // Composition ingredients management
+  getIngredients(compositionIndex: number) {
+    return this.composition.controls[compositionIndex].get('ingredients') as FormArray;
+  }
+
+  addIngredient(compositionIndex: number) {
+    this.getIngredients(compositionIndex).push(this.createIngredient());
+  }
+
+  createIngredient() {
+    return new FormGroup({
+      ingredient: new FormControl('', [
+        Validators.required,
+      ]),
+      unit: new FormControl(''),
+      quantity: new FormControl(''),
+    });
+  }
+
+  removeIngredient(compositionIndex: number, ingredientIndex: number) {
+    this.getIngredients(compositionIndex).removeAt(ingredientIndex);
   }
 }
