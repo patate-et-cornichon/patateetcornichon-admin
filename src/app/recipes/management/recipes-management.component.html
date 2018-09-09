@@ -6,6 +6,7 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Général</ng-template>
       <div fxLayout="column">
+        <mat-checkbox formControlName="published">Publié ?</mat-checkbox>
         <!-- Full Title fields -->
         <div fxLayout="row" fxLayoutGap="40px">
           <mat-form-field fxFlex="1 1 auto">
@@ -77,16 +78,105 @@
       </div>
     </form>
   </mat-step>
+
+  <!-- Second step -->
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Informations de la recette</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Pour..." formControlName="goal" required>
-      </mat-form-field>
+      <div fxLayout="column">
+        <!-- Goal field -->
+        <mat-form-field>
+          <input matInput placeholder="Pour..." formControlName="goal" required>
+        </mat-form-field>
+
+        <!-- Preparation field -->
+        <mat-form-field>
+          <input type="number" matInput placeholder="Temps de préparation" formControlName="preparation_time" required>
+        </mat-form-field>
+
+        <!-- Cooking field -->
+        <mat-form-field>
+          <input type="number" matInput placeholder="Temps de cuisson" formControlName="cooking_time">
+        </mat-form-field>
+
+        <!-- Fridge field -->
+        <mat-form-field>
+          <input type="number" matInput placeholder="Temps de frigo" formControlName="fridge_time">
+        </mat-form-field>
+
+        <!-- Leavening field -->
+        <mat-form-field>
+          <input type="number" matInput placeholder="Temps de repos" formControlName="leavening_time">
+        </mat-form-field>
+
+        <!-- Difficulty field -->
+        <mat-form-field>
+          <mat-select placeholder="Difficulté" formControlName="difficulty" required>
+            <mat-option value="1">Facile</mat-option>
+            <mat-option value="2">Moyen</mat-option>
+            <mat-option value="3">Difficile</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
           <button mat-stroked-button matStepperPrevious>Précédent</button>
           <button mat-stroked-button matStepperNext>Suivant</button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Third step -->
+  <mat-step [stepControl]="thirdGroup">
+    <form [formGroup]="thirdGroup">
+      <ng-template matStepLabel>Contenu</ng-template>
+      <div fxLayout="column">
+        <mat-form-field>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            placeholder="Introduction"
+            formControlName="introduction"
+            required
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious>Précédent</button>
+          <button mat-stroked-button matStepperNext>Suivant</button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Fourth step -->
+  <mat-step [stepControl]="fourthGroup">
+    <form [formGroup]="fourthGroup">
+      <ng-template matStepLabel>SEO</ng-template>
+      <div fxLayout="column">
+        <mat-form-field>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            placeholder="Meta description"
+            formControlName="meta_description"
+            #meta_description
+            maxlength="300"
+            required
+          >
+          </textarea>
+          <mat-hint align="end">{{ meta_description.value.length }} / 300</mat-hint>
+        </mat-form-field>
+      </div>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious>Précédent</button>
+          <button mat-flat-button color="primary" type="submit">Enregistrer</button>
         </div>
       </div>
     </form>

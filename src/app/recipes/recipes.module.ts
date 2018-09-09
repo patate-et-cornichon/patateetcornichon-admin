@@ -17,6 +17,7 @@ import {
   MatSelectModule,
   MatAutocompleteModule,
   MatChipsModule,
+  MatCheckboxModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -48,6 +49,7 @@ import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.modu
     MatSelectModule,
     MatAutocompleteModule,
     MatChipsModule,
+    MatCheckboxModule,
     FlexLayoutModule,
 
     RecipesRoutingModule,

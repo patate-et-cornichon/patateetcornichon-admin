@@ -22,6 +22,7 @@ export class RecipesManagementComponent implements OnInit {
   tags: string[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   firstFormGroup = new FormGroup({
+    published: new FormControl(''),
     title: new FormControl('', [
       Validators.required,
     ]),
@@ -48,6 +49,27 @@ export class RecipesManagementComponent implements OnInit {
     goal: new FormControl('', [
       Validators.required,
     ]),
+    preparation_time: new FormControl('', [
+      Validators.required,
+    ]),
+    cooking_time: new FormControl(''),
+    fridge_time: new FormControl(''),
+    leavening_time: new FormControl(''),
+    difficulty: new FormControl('', [
+      Validators.required,
+    ]),
+  });
+
+  thirdGroup = new FormGroup({
+    introduction: new FormControl('', [
+      Validators.required,
+    ]),
+  });
+
+  fourthGroup = new FormGroup({
+    meta_description: new FormControl('', [
+      Validators.required,
+    ])
   });
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
