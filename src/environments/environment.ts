@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://testing.api.patateetcornichon.com',
+  baseUrl: 'https://testing-api.patateetcornichon.com',
 };
 
 /*

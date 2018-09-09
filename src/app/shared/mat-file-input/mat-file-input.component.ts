@@ -36,8 +36,8 @@ export const _MatInputMixinBase = mixinErrorState(MatFileInputBase);
 
 @Component({
   selector: 'app-mat-file-input',
-  styleUrls: ['/mat-file-input.component.scss'],
-  templateUrl: '/mat-file-input.component.html',
+  styleUrls: ['./mat-file-input.component.scss'],
+  templateUrl: './mat-file-input.component.html',
   providers: [
     {
       provide: MatFormFieldControl,
