@@ -20,6 +20,10 @@ export class RecipesManagementComponent implements OnInit {
   filteredTags: Observable<string[]>;
   tagList: string[] = [];
   tags: string[] = [];
+  filteredIngredients: string[];
+  ingredientsList: string[] = [];
+  filteredUnits: string[];
+  unitsList: string[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   firstFormGroup = new FormGroup({
     published: new FormControl(''),
@@ -97,11 +101,11 @@ export class RecipesManagementComponent implements OnInit {
         startWith(null),
         map((tag: string | null) => {
           if (tag) {
-            return this._filter(tag);
+            return this._filterTag(tag);
           } else {
             return this.tagList.filter(tagItem => !this.tagList.includes(tagItem));
           }
-        })
+        }),
       );
   }
 
@@ -117,7 +121,25 @@ export class RecipesManagementComponent implements OnInit {
     this.recipesService
       .getTags()
       .subscribe(
-        tags => this.tagList = tags.map(tag => tag.name.toLocaleLowerCase()),
+        tags => this.tagList = tags.map(tag => tag.name),
+      );
+
+    // Get ingredients
+    this.recipesService
+      .getIngredients()
+      .subscribe(
+        ingredients => this.ingredientsList = ingredients.map(
+          ingredient => ingredient.name,
+        ),
+      );
+
+    // Get units
+    this.recipesService
+      .getUnits()
+      .subscribe(
+        units => this.unitsList = units.map(
+          unit => unit.name.toLocaleLowerCase()
+        ),
       );
   }
 
@@ -181,22 +203,6 @@ export class RecipesManagementComponent implements OnInit {
     this.tags.push(event.option.viewValue);
     this.tagInput.nativeElement.value = '';
     this.firstFormGroup.controls['tags'].setValue(null);
-  }
-
-  /**
-   * Filter tags according to a tag value
-   *
-   * @param value
-   * @private
-   */
-  private _filter(value: string): string[] {
-    const filterValue = value;
-
-    return this.tagList
-      .filter(tag => {
-        tag = tag.toLocaleLowerCase();
-        return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
-      });
   }
 
   /**
@@ -264,5 +270,59 @@ export class RecipesManagementComponent implements OnInit {
 
   removeIngredient(compositionIndex: number, ingredientIndex: number) {
     this.getIngredients(compositionIndex).removeAt(ingredientIndex);
+  }
+
+  /**
+   * Filter ingredients on keypress event
+   *
+   * @param event
+   */
+  filterIngredients(event) {
+    const filterValue = event.currentTarget.value;
+
+    if (filterValue === '') {
+      this.filteredIngredients = [];
+    } else {
+      this.filteredIngredients = this.ingredientsList
+        .filter(ingredient => {
+          ingredient = ingredient.toLocaleLowerCase();
+          return ingredient.indexOf(filterValue.toLowerCase()) === 0;
+        });
+    }
+  }
+
+  /**
+   * Filter units on keypress event
+   *
+   * @param event
+   */
+  filterUnits(event) {
+    const filterValue = event.currentTarget.value;
+
+    if (filterValue === '') {
+      this.filteredUnits = [];
+    } else {
+      this.filteredUnits = this.unitsList
+        .filter(unit => {
+          unit = unit.toLocaleLowerCase();
+          return unit.indexOf(filterValue.toLowerCase()) === 0;
+        });
+    }
+  }
+
+  /**
+   * Filter tags according to a tag value
+   *
+   * @param value
+   * @private
+   */
+  private _filterTag(value: string): string[] {
+    const filterValue = value;
+
+    return this.tagList
+      .filter(tag => {
+        tag = tag.toLocaleLowerCase();
+        return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
+      });
   }
 }

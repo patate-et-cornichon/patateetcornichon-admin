@@ -185,10 +185,34 @@
               *ngFor="let ingredient of getIngredients(compositionIndex).controls; index as ingredientIndex"
               [formGroup]="ingredient">
               <mat-form-field fxFlex="1 1 auto">
-                <input matInput placeholder="Ingredient" formControlName="ingredient" required>
+                <input
+                  (keyup)="filterIngredients($event)"
+                  (focus)="filteredIngredients = []"
+                  matInput placeholder="Ingredient"
+                  formControlName="ingredient"
+                  required
+                  [matAutocomplete]="autoIngredient"
+                >
+                <mat-autocomplete #autoIngredient="matAutocomplete">
+                  <mat-option *ngFor="let ingredient of filteredIngredients" [value]="ingredient | capitalizeFirst">
+                    {{ ingredient | capitalizeFirst }}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
               <mat-form-field fxFlex="1 1 auto">
-                <input matInput placeholder="Unité" formControlName="unit">
+                <input
+                  (keyup)="filterUnits($event)"
+                  (focus)="filteredUnits = []"
+                  matInput
+                  placeholder="Unité"
+                  formControlName="unit"
+                  [matAutocomplete]="autoUnit"
+                >
+                <mat-autocomplete #autoUnit="matAutocomplete">
+                  <mat-option *ngFor="let unit of filteredUnits" [value]="unit | capitalizeFirst">
+                    {{ unit | capitalizeFirst }}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
               <mat-form-field fxFlex="1 1 auto">
                 <input type="number" matInput placeholder="Quantité" formControlName="quantity">

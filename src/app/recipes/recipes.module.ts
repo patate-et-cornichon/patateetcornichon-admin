@@ -27,6 +27,7 @@ import { RecipesRoutingModule } from './recipes.routing';
 import { RecipesService } from './recipes.service';
 import { DialogsModule } from '../shared/dialogs/dialogs.module';
 import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
+import { CapitalizeFirstPipe } from '../pipes/capitalize-first.pipe';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.modu
   declarations: [
     RecipesComponent,
     RecipesManagementComponent,
+    CapitalizeFirstPipe,
   ],
   providers: [
     RecipesService

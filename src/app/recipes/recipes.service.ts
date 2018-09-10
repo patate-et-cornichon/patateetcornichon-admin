@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Recipe, PaginatedRecipes, Category, Tag } from './recipes.interface';
+import { Recipe, PaginatedRecipes, Category, Tag, RecipeIngredient, Ingredient, Unit } from './recipes.interface';
 import { RecipesModule } from './recipes.module';
 
 
@@ -53,5 +53,19 @@ export class RecipesService {
    */
   getTags(): Observable<Tag[]> {
     return this.http.get<Tag[]>(`${environment.baseUrl}/recipes/tags/`);
+  }
+
+  /**
+   * GET: Get recipe ingredients from server
+   */
+  getIngredients(): Observable<Ingredient[]> {
+    return this.http.get<Ingredient[]>(`${environment.baseUrl}/recipes/ingredients/`);
+  }
+
+  /**
+   * GET: Get recipe units from server
+   */
+  getUnits(): Observable<Unit[]> {
+    return this.http.get<Unit[]>(`${environment.baseUrl}/recipes/units/`);
   }
 }

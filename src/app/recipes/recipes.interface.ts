@@ -10,7 +10,16 @@ export interface Tag {
   name: string;
 }
 
+export interface Unit {
+  name: string;
+}
+
 export interface Ingredient {
+  name: string;
+  slug: string;
+}
+
+export interface RecipeIngredient {
   ingredient: string;
   quantity?: number;
   unit?: string;
@@ -35,7 +44,7 @@ export interface Recipe {
   difficulty: number;
   introduction: string;
   steps: string[];
-  ingredients: Ingredient[];
+  ingredients: RecipeIngredient[];
   categories: Category[];
   tags: Tag[];
   comments_count: number;
