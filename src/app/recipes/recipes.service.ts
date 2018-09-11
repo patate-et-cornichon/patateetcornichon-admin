@@ -23,6 +23,13 @@ export class RecipesService {
   }
 
   /**
+   * POST: post a new recipe
+   */
+  postRecipe(data: Recipe): Observable<Recipe> {
+    return this.http.post<Recipe>(`${environment.baseUrl}/recipes/`, data);
+  }
+
+  /**
    * PATCH: update recipe identified by its slug.
    *
    * @param recipeSlug

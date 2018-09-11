@@ -38,7 +38,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     return next.handle(newRequest)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 400) {
+          if (
+            error.status === 400 &&
+            (req.url.includes('refresh-token') || req.url.includes('obtain-token'))
+          ) {
             this.authService.logout();
           }
           this.messageService.showMessage('Une erreur est survenue');

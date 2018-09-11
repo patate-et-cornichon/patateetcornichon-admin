@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
@@ -8,6 +9,7 @@ import slugify from 'slugify';
 import { Category } from '../recipes.interface';
 import { RecipesService } from '../recipes.service';
 import { map, startWith } from 'rxjs/operators';
+import { MessageService } from '../../core/message/message.service';
 
 
 @Component({
@@ -16,86 +18,83 @@ import { map, startWith } from 'rxjs/operators';
   styleUrls: ['./recipes-management.component.scss']
 })
 export class RecipesManagementComponent implements OnInit {
+  isPosting = false;
+
+  // Categories
   categoryList: Category[] = [];
+
+  // Tags
   filteredTags: Observable<string[]>;
   tagList: string[] = [];
   tags: string[] = [];
+
+  // Ingredients / Units
   filteredIngredients: string[];
   ingredientsList: string[] = [];
   filteredUnits: string[];
   unitsList: string[] = [];
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  firstFormGroup = new FormGroup({
-    published: new FormControl(''),
-    title: new FormControl('', [
+  formGroup = new FormGroup({
+    published: new FormControl(false),
+    title: new FormControl(null, [
       Validators.required,
     ]),
-    sub_title: new FormControl('', [
+    sub_title: new FormControl(null, [
       Validators.required,
     ]),
-    full_title: new FormControl('', [
+    full_title: new FormControl(null, [
       Validators.required,
     ]),
-    slug: new FormControl('', [
+    slug: new FormControl(null, [
       Validators.required,
     ]),
-    categories: new FormControl('', [
+    categories: new FormControl(null, [
       Validators.required,
     ]),
-    tags: new FormControl(''),
-    main_picture: new FormControl('', [
+    tags: new FormControl(null),
+    main_picture: new FormControl(null, [
       Validators.required,
     ]),
-    secondary_picture: new FormControl(''),
-  });
-
-  secondFormGroup = new FormGroup({
-    goal: new FormControl('', [
+    secondary_picture: new FormControl(null),
+    goal: new FormControl(null, [
       Validators.required,
     ]),
-    preparation_time: new FormControl('', [
+    preparation_time: new FormControl(null, [
       Validators.required,
     ]),
-    cooking_time: new FormControl(''),
-    fridge_time: new FormControl(''),
-    leavening_time: new FormControl(''),
-    difficulty: new FormControl('', [
+    cooking_time: new FormControl(null),
+    fridge_time: new FormControl(null),
+    leavening_time: new FormControl(null),
+    difficulty: new FormControl(null, [
       Validators.required,
     ]),
-  });
-
-  thirdGroup = new FormGroup({
-    introduction: new FormControl('', [
+    introduction: new FormControl(null, [
       Validators.required,
     ]),
-  });
-
-  fourthGroup = new FormGroup({
     composition: new FormArray([this.createComposition()], [
       Validators.required,
     ]),
-  });
-
-  fifthGroup = new FormGroup({
     steps: new FormArray([
-      new FormControl('', [
+      new FormControl(null, [
         Validators.required,
       ]),
     ], [
       Validators.required,
     ]),
-  });
-
-  sixthGroup = new FormGroup({
-    meta_description: new FormControl('', [
+    meta_description: new FormControl(null, [
       Validators.required,
-    ])
+    ]),
   });
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
-  constructor(private recipesService: RecipesService) {
-    this.filteredTags = this.firstFormGroup.controls['tags']
+  constructor(
+    private recipesService: RecipesService,
+    private messageService: MessageService,
+    private router: Router,
+  ) {
+    this.filteredTags = this.formGroup.controls['tags']
       .valueChanges
       .pipe(
         startWith(null),
@@ -178,7 +177,7 @@ export class RecipesManagementComponent implements OnInit {
       input.value = '';
     }
 
-    this.firstFormGroup.controls['tags'].setValue(null);
+    this.formGroup.controls['tags'].setValue(null);
   }
 
   /**
@@ -202,25 +201,28 @@ export class RecipesManagementComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     this.tags.push(event.option.viewValue);
     this.tagInput.nativeElement.value = '';
-    this.firstFormGroup.controls['tags'].setValue(null);
+    this.formGroup.controls['tags'].setValue(null);
   }
 
   /**
    * Change the slug field value according to the full title field
    */
   changeSlug(): void {
-    const fullTitleValue = this.firstFormGroup.controls['full_title'].value.toLowerCase();
-    const slugifiedTitle = slugify(fullTitleValue);
-    this.firstFormGroup.controls['slug'].setValue(slugifiedTitle);
+    let fullTitleValue = this.formGroup.controls['full_title'].value;
+    if (fullTitleValue) {
+      fullTitleValue = fullTitleValue.toLowerCase();
+      const slugifiedTitle = slugify(fullTitleValue);
+      this.formGroup.controls['slug'].setValue(slugifiedTitle);
+    }
   }
 
   // Step Management
   get steps(): FormArray {
-    return this.fifthGroup.get('steps') as FormArray;
+    return this.formGroup.get('steps') as FormArray;
   }
 
   addStep() {
-    this.steps.push(new FormControl(''));
+    this.steps.push(new FormControl(null));
   }
 
   removeStep(index) {
@@ -229,7 +231,7 @@ export class RecipesManagementComponent implements OnInit {
 
   // Composition Management
   get composition(): FormArray {
-    return this.fourthGroup.get('composition') as FormArray;
+    return this.formGroup.get('composition') as FormArray;
   }
 
   addComposition() {
@@ -238,7 +240,7 @@ export class RecipesManagementComponent implements OnInit {
 
   createComposition() {
     return new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl(null),
       ingredients: new FormArray([this.createIngredient()], [
         Validators.required,
       ]),
@@ -260,11 +262,11 @@ export class RecipesManagementComponent implements OnInit {
 
   createIngredient() {
     return new FormGroup({
-      ingredient: new FormControl('', [
+      ingredient: new FormControl(null, [
         Validators.required,
       ]),
-      unit: new FormControl(''),
-      quantity: new FormControl(''),
+      unit: new FormControl(null),
+      quantity: new FormControl(null),
     });
   }
 
@@ -324,5 +326,27 @@ export class RecipesManagementComponent implements OnInit {
         tag = tag.toLocaleLowerCase();
         return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
       });
+  }
+
+  /**
+   * Save recipe
+   */
+  saveRecipe() {
+    if (this.formGroup.valid) {
+      this.isPosting = true;
+      const data = {
+        ...this.formGroup.value,
+        tags: this.tags,
+      };
+      this.recipesService.postRecipe(data)
+        .subscribe(
+          () => {
+            this.messageService.showMessage('Recette enregistrée !');
+            return this.router.navigate(['/recipes']);
+          },
+          null,
+          () => this.isPosting = false,
+        );
+    }
   }
 }

@@ -1,9 +1,9 @@
 <h1 class="mat-h1">Ajouter une recette</h1>
 
-<mat-vertical-stepper #stepper>
-  <!-- First step -->
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
+<form [formGroup]="formGroup" (submit)="saveRecipe()">
+  <mat-vertical-stepper #stepper>
+    <!-- First step -->
+    <mat-step>
       <ng-template matStepLabel>Général</ng-template>
       <div fxLayout="column">
         <mat-checkbox formControlName="published">Publié ?</mat-checkbox>
@@ -75,14 +75,12 @@
       </div>
 
       <div>
-        <button mat-stroked-button matStepperNext>Suivant</button>
+        <button mat-stroked-button matStepperNext type="button">Suivant</button>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <!-- Second step -->
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
+    <!-- Second step -->
+    <mat-step>
       <ng-template matStepLabel>Informations de la recette</ng-template>
       <div fxLayout="column">
         <!-- Goal field -->
@@ -121,16 +119,14 @@
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button matStepperPrevious>Précédent</button>
-          <button mat-stroked-button matStepperNext>Suivant</button>
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-stroked-button matStepperNext type="button">Suivant</button>
         </div>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <!-- Third step -->
-  <mat-step [stepControl]="thirdGroup">
-    <form [formGroup]="thirdGroup">
+    <!-- Third step -->
+    <mat-step>
       <ng-template matStepLabel>Contenu</ng-template>
       <div fxLayout="column">
         <mat-form-field>
@@ -147,16 +143,14 @@
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button matStepperPrevious>Précédent</button>
-          <button mat-stroked-button matStepperNext>Suivant</button>
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-stroked-button matStepperNext type="button">Suivant</button>
         </div>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <!-- Fourth step -->
-  <mat-step [stepControl]="fourthGroup">
-    <form [formGroup]="fourthGroup">
+    <!-- Fourth step -->
+    <mat-step>
       <ng-template matStepLabel>Composition</ng-template>
       <div formArrayName="composition" fxLayout="column">
         <mat-card fxLayout="column"
@@ -237,16 +231,14 @@
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button matStepperPrevious>Précédent</button>
-          <button mat-stroked-button matStepperNext>Suivant</button>
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-stroked-button matStepperNext type="button">Suivant</button>
         </div>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <!-- Fifth step -->
-  <mat-step [stepControl]="fifthGroup">
-    <form [formGroup]="fifthGroup">
+    <!-- Fifth step -->
+    <mat-step>
       <ng-template matStepLabel>Étapes</ng-template>
       <div formArrayName="steps" fxLayout="column">
         <div fxLayout="row"
@@ -283,16 +275,14 @@
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button matStepperPrevious>Précédent</button>
-          <button mat-stroked-button matStepperNext>Suivant</button>
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-stroked-button matStepperNext type="button">Suivant</button>
         </div>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <!-- Sixth step -->
-  <mat-step [stepControl]="sixthGroup">
-    <form [formGroup]="sixthGroup">
+    <!-- Sixth step -->
+    <mat-step>
       <ng-template matStepLabel>SEO</ng-template>
       <div fxLayout="column">
         <mat-form-field>
@@ -312,10 +302,12 @@
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button matStepperPrevious>Précédent</button>
-          <button mat-flat-button color="primary" type="submit">Enregistrer</button>
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="isPosting">
+            Enregistrer
+          </button>
         </div>
       </div>
-    </form>
-  </mat-step>
-</mat-vertical-stepper>
+    </mat-step>
+  </mat-vertical-stepper>
+</form>
