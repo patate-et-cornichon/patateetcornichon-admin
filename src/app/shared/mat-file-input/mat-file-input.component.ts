@@ -1,27 +1,24 @@
 import {
+  AfterViewInit,
   Component,
   DoCheck,
   ElementRef,
   HostBinding,
   HostListener,
   Input,
-  OnDestroy,
+  OnDestroy, OnInit,
   Optional,
   Renderer2,
   Self,
   ViewChild
 } from '@angular/core';
-import { CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl, mixinErrorState } from '@angular/material';
+import { CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl, MatInput, mixinErrorState } from '@angular/material';
 import { Subject } from 'rxjs';
 import { ControlValueAccessor, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { HttpClient } from '@angular/common/http';
 
-
-class FileInput {
-  constructor(public file: string) {
-  }
-}
 
 /* Boilerplate for applying mixins to MatFileInput. */
 export class MatFileInputBase {
@@ -42,12 +39,12 @@ export const _MatInputMixinBase = mixinErrorState(MatFileInputBase);
     {
       provide: MatFormFieldControl,
       useExisting: MatFileInputComponent
-    },
+    }
   ],
 })
 export class MatFileInputComponent
   extends _MatInputMixinBase
-  implements MatFormFieldControl<FileInput>, ControlValueAccessor, OnDestroy, DoCheck, CanUpdateErrorState {
+  implements MatFormFieldControl<string>, ControlValueAccessor, OnInit, OnDestroy, DoCheck, CanUpdateErrorState {
   static nextId = 0;
 
   stateChanges = new Subject<void>();
@@ -56,6 +53,7 @@ export class MatFileInputComponent
 
   private _placeholder: string;
   private _required = false;
+  private _reader = new FileReader();
 
   @Input() autofilled = false;
   @Input() valuePlaceholder: string;
@@ -67,20 +65,20 @@ export class MatFileInputComponent
   @ViewChild('input') private input: ElementRef;
   @ViewChild('preview') private preview: ElementRef;
 
-  imageContent = '';
+  imageContent = null;
 
   setDescribedByIds(ids: string[]) {
     this.describedBy = ids.join(' ');
   }
 
   @Input()
-  get value(): FileInput | null {
+  get value(): string | null {
     return this.empty ? null : this._elementRef.nativeElement.value;
   }
 
-  set value(fileInput: FileInput | null) {
+  set value(fileInput: string | null) {
     if (fileInput) {
-      this.writeValue(fileInput.file);
+      this.writeValue(fileInput);
       this.stateChanges.next();
     }
   }
@@ -144,7 +142,8 @@ export class MatFileInputComponent
     _defaultErrorStateMatcher: ErrorStateMatcher,
     private fm: FocusMonitor,
     private _elementRef: ElementRef,
-    private _renderer: Renderer2
+    private _renderer: Renderer2,
+    private http: HttpClient,
   ) {
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
     if (this.ngControl != null) {
@@ -155,6 +154,14 @@ export class MatFileInputComponent
         this.focused = !!origin;
         this.stateChanges.next();
       });
+    this._initReaderEventHandler();
+  }
+
+  ngOnInit() {
+    if (!this.empty) {
+      this.imageContent = this.value;
+      this.preview.nativeElement.style.backgroundImage = `url(${this.value})`;
+    }
   }
 
   private _onChange(_: any) {
@@ -178,21 +185,21 @@ export class MatFileInputComponent
   @HostListener('change', ['$event'])
   change(event: any) {
     const file = (<HTMLInputElement>event.target).files[0];
-    const reader = new FileReader();
+    if (file) {
+      this._reader.readAsDataURL(file);
+    }
+  }
 
-    reader.addEventListener('load', () => {
+  _initReaderEventHandler() {
+    this._reader.addEventListener('load', () => {
       // Get the result and set the preview image
-      this.imageContent = reader.result;
+      this.imageContent = this._reader.result;
       this.preview.nativeElement.style.backgroundImage = `url(${this.imageContent})`;
 
       // Change the component input value
-      this.value = new FileInput(reader.result);
-      this._onChange(reader.result);
+      this.value = this._reader.result;
+      this._onChange(this._reader.result);
     }, false);
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
   }
 
   @HostListener('focusout')
@@ -222,7 +229,7 @@ export class MatFileInputComponent
   deleteImage(event: Event) {
     event.stopPropagation();
 
-    const emptyValue = '';
+    const emptyValue = null;
     this.input.nativeElement.value = emptyValue;
     this.imageContent = emptyValue;
     this.writeValue(emptyValue);

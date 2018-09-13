@@ -3,7 +3,7 @@
     <mat-card-content>
       <div>
         <mat-form-field class="login-field">
-          <input matInput placeholder="Email" formControlName="email">
+          <input type="email" matInput placeholder="Email" formControlName="email">
           <mat-error
             *ngIf="loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')"
           >

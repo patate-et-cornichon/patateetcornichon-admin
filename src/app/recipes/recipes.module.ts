@@ -22,7 +22,10 @@ import {
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { RecipesComponent } from './recipes.component';
-import { RecipesManagementComponent } from './management/recipes-management.component';
+import {
+  RecipesManagementCreateComponent,
+  RecipesManagementEditComponent,
+} from './management/recipes-management.component';
 import { RecipesRoutingModule } from './recipes.routing';
 import { RecipesService } from './recipes.service';
 import { DialogsModule } from '../shared/dialogs/dialogs.module';
@@ -59,7 +62,8 @@ import { CapitalizeFirstPipe } from '../pipes/capitalize-first.pipe';
   ],
   declarations: [
     RecipesComponent,
-    RecipesManagementComponent,
+    RecipesManagementCreateComponent,
+    RecipesManagementEditComponent,
     CapitalizeFirstPipe,
   ],
   providers: [

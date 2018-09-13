@@ -2,11 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { RecipesComponent } from './recipes.component';
-import { RecipesManagementComponent } from './management/recipes-management.component';
+import {
+  RecipesManagementCreateComponent,
+  RecipesManagementEditComponent,
+} from './management/recipes-management.component';
+
 
 const routes: Routes = [
-  { path: '', component: RecipesComponent },
-  { path: 'add', component: RecipesManagementComponent },
+  {path: '', component: RecipesComponent},
+  {path: 'add', component: RecipesManagementCreateComponent},
+  {path: ':slug', component: RecipesManagementEditComponent},
 ];
 
 @NgModule({

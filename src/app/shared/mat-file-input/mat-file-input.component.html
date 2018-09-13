@@ -1,5 +1,5 @@
 <input #input type="file">
-<div class="image-preview" #preview [class.hidden]="imageContent === ''">
+<div class="image-preview" #preview [class.hidden]="!imageContent">
   <button
     type="button"
     mat-mini-fab

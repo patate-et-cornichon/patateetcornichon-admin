@@ -1,6 +1,6 @@
 <h1 class="mat-h1">Ajouter une recette</h1>
 
-<form [formGroup]="formGroup" (submit)="saveRecipe()">
+<form [formGroup]="formGroup" (submit)="saveRecipe()" *ngIf="!recipeFetching">
   <mat-vertical-stepper #stepper>
     <!-- First step -->
     <mat-step>
@@ -65,8 +65,12 @@
         <!-- Images fields -->
         <div fxLayout="row" fxLayoutGap="40px">
           <mat-form-field fxFlex="1 1 auto">
-            <app-mat-file-input formControlName="main_picture" placeholder="Image principale"
-                                required></app-mat-file-input>
+            <app-mat-file-input
+              formControlName="main_picture"
+              placeholder="Image principale"
+              required
+            >
+            </app-mat-file-input>
           </mat-form-field>
           <mat-form-field fxFlex="1 1 auto">
             <app-mat-file-input formControlName="secondary_picture" placeholder="Image secondaire"></app-mat-file-input>
@@ -111,9 +115,9 @@
         <!-- Difficulty field -->
         <mat-form-field>
           <mat-select placeholder="Difficulté" formControlName="difficulty" required>
-            <mat-option value="1">Facile</mat-option>
-            <mat-option value="2">Moyen</mat-option>
-            <mat-option value="3">Difficile</mat-option>
+            <mat-option [value]="1">Facile</mat-option>
+            <mat-option [value]="2">Moyen</mat-option>
+            <mat-option [value]="3">Difficile</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

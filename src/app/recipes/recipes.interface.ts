@@ -25,6 +25,11 @@ export interface RecipeIngredient {
   unit?: string;
 }
 
+export interface RecipeComposition {
+  name?: string;
+  ingredients: RecipeIngredient[];
+}
+
 export interface Recipe {
   id: string;
   slug: string;
@@ -44,7 +49,7 @@ export interface Recipe {
   difficulty: number;
   introduction: string;
   steps: string[];
-  ingredients: RecipeIngredient[];
+  composition: RecipeComposition[];
   categories: Category[];
   tags: Tag[];
   comments_count: number;

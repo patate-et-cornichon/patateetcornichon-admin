@@ -23,10 +23,24 @@ export class RecipesService {
   }
 
   /**
+   * GET: get a single recipe
+   */
+  getRecipe(slug): Observable<Recipe> {
+    return this.http.get<Recipe>(`${environment.baseUrl}/recipes/${slug}/`);
+  }
+
+  /**
    * POST: post a new recipe
    */
   postRecipe(data: Recipe): Observable<Recipe> {
     return this.http.post<Recipe>(`${environment.baseUrl}/recipes/`, data);
+  }
+
+  /**
+   * PATCH: update recipe
+   */
+  patchRecipe(slug: string, data: Recipe): Observable<Recipe> {
+    return this.http.patch<Recipe>(`${environment.baseUrl}/recipes/${slug}/`, data);
   }
 
   /**

@@ -1,24 +1,20 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
 import slugify from 'slugify';
 
-import { Category } from '../recipes.interface';
+import { Category, Recipe } from '../recipes.interface';
 import { RecipesService } from '../recipes.service';
 import { map, startWith } from 'rxjs/operators';
 import { MessageService } from '../../core/message/message.service';
 
 
-@Component({
-  selector: 'app-recipes-management',
-  templateUrl: './recipes-management.component.html',
-  styleUrls: ['./recipes-management.component.scss']
-})
-export class RecipesManagementComponent implements OnInit {
+export class RecipesManagementBaseComponent implements OnInit {
   isPosting = false;
+  recipeFetching = false;
 
   // Categories
   categoryList: Category[] = [];
@@ -72,14 +68,10 @@ export class RecipesManagementComponent implements OnInit {
     introduction: new FormControl(null, [
       Validators.required,
     ]),
-    composition: new FormArray([this.createComposition()], [
+    composition: new FormArray([], [
       Validators.required,
     ]),
-    steps: new FormArray([
-      new FormControl(null, [
-        Validators.required,
-      ]),
-    ], [
+    steps: new FormArray([], [
       Validators.required,
     ]),
     meta_description: new FormControl(null, [
@@ -90,9 +82,9 @@ export class RecipesManagementComponent implements OnInit {
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
   constructor(
-    private recipesService: RecipesService,
-    private messageService: MessageService,
-    private router: Router,
+    protected recipesService: RecipesService,
+    protected messageService: MessageService,
+    protected router: Router,
   ) {
     this.filteredTags = this.formGroup.controls['tags']
       .valueChanges
@@ -225,6 +217,12 @@ export class RecipesManagementComponent implements OnInit {
     this.steps.push(new FormControl(null));
   }
 
+  createStep() {
+    return new FormControl(null, [
+      Validators.required,
+    ]);
+  }
+
   removeStep(index) {
     this.steps.removeAt(index);
   }
@@ -238,13 +236,20 @@ export class RecipesManagementComponent implements OnInit {
     this.composition.push(this.createComposition());
   }
 
-  createComposition() {
-    return new FormGroup({
+  createComposition(ingredientsLength: number = 1) {
+    const composition = new FormGroup({
       name: new FormControl(null),
-      ingredients: new FormArray([this.createIngredient()], [
+      ingredients: new FormArray([], [
         Validators.required,
       ]),
     });
+    const ingredients = composition.get('ingredients') as FormArray;
+    Array.from({
+        length: ingredientsLength
+      },
+      () => ingredients.push(this.createIngredient())
+    );
+    return composition;
   }
 
   removeComposition(index: number) {
@@ -327,6 +332,26 @@ export class RecipesManagementComponent implements OnInit {
         return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
       });
   }
+}
+
+
+@Component({
+  selector: 'app-recipes-management-create',
+  templateUrl: './recipes-management.component.html',
+  styleUrls: ['./recipes-management.component.scss']
+})
+export class RecipesManagementCreateComponent extends RecipesManagementBaseComponent implements OnInit {
+  constructor(
+    protected recipesService: RecipesService,
+    protected messageService: MessageService,
+    protected router: Router,
+  ) {
+    super(recipesService, messageService, router);
+
+    // Init composition and steps with at least one entity
+    this.composition.push(this.createComposition());
+    this.steps.push(this.createStep());
+  }
 
   /**
    * Save recipe
@@ -343,6 +368,101 @@ export class RecipesManagementComponent implements OnInit {
           () => {
             this.messageService.showMessage('Recette enregistrée !');
             return this.router.navigate(['/recipes']);
+          },
+          null,
+          () => this.isPosting = false,
+        );
+    }
+  }
+}
+
+
+@Component({
+  selector: 'app-recipes-management-edit',
+  templateUrl: './recipes-management.component.html',
+  styleUrls: ['./recipes-management.component.scss']
+})
+export class RecipesManagementEditComponent extends RecipesManagementBaseComponent implements OnInit {
+
+  slug: string;
+  recipe: Recipe;
+
+  constructor(
+    protected recipesService: RecipesService,
+    protected messageService: MessageService,
+    protected router: Router,
+    protected route: ActivatedRoute,
+  ) {
+    super(recipesService, messageService, router);
+
+    this.slug = this.route.snapshot.params.slug;
+
+    this.recipeFetching = true;
+    this.recipesService.getRecipe(this.slug)
+      .subscribe(
+        recipe => {
+          this.recipe = recipe;
+          this.recipeFetching = false;
+          this._populateData(recipe);
+        },
+        () => this.router.navigateByUrl('/recipes'),
+      );
+  }
+
+  /**
+   * Populate recipe fields with fetched data
+   *
+   * @param recipe
+   * @private
+   */
+  _populateData(recipe: Recipe): void {
+    // Add composition structure
+    for (const composition of recipe.composition) {
+      this.composition.push(
+        this.createComposition(composition.ingredients.length),
+      );
+    }
+    // Add steps structure
+    Array.from(
+      {
+        length: recipe.steps.length
+      },
+      () => this.steps.push(this.createStep()),
+    );
+
+    // Populate with values
+    this.formGroup.patchValue(recipe);
+    // Update complex fields
+    this.formGroup.get('categories').setValue(
+      recipe.categories.map(category => category.id),
+    );
+    this.tags = recipe.tags.map(tag => tag.name);
+  }
+
+  /**
+   * Save recipe
+   */
+  saveRecipe() {
+    if (this.formGroup.valid) {
+      this.isPosting = true;
+      const data = {
+        ...this.formGroup.value,
+        tags: this.tags,
+      };
+
+      // We don't want to send pictures if they are the default ones (URL pictures)
+      if (data['main_picture'] === this.recipe.main_picture) {
+        delete data['main_picture'];
+      }
+      if (data['secondary_picture'] === this.recipe.secondary_picture) {
+        delete data['secondary_picture'];
+      }
+
+      this.recipesService.patchRecipe(this.recipe.slug, data)
+        .subscribe(
+          (response) => {
+            this.messageService.showMessage('Recette mise à jour !');
+            this.slug = response.slug;
           },
           null,
           () => this.isPosting = false,

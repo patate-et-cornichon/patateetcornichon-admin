@@ -16,8 +16,8 @@ import { MessageService } from '../core/message/message.service';
 })
 export class RecipesComponent implements OnInit {
   displayedColumns: string[] = [
-    'created',
     'full_title',
+    'created',
     'categories',
     'comments_count',
     'published',
