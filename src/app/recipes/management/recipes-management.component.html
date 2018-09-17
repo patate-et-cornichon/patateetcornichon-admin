@@ -312,6 +312,9 @@
           </button>
         </div>
       </div>
+      <mat-error *ngIf="hasError" class="form-error">
+        Une erreur est présente dans le formulaire
+      </mat-error>
     </mat-step>
   </mat-vertical-stepper>
 </form>

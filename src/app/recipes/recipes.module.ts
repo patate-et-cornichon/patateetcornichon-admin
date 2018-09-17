@@ -18,6 +18,7 @@ import {
   MatAutocompleteModule,
   MatChipsModule,
   MatCheckboxModule,
+  MatMenuModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -53,6 +54,7 @@ import { CapitalizeFirstPipe } from '../pipes/capitalize-first.pipe';
     MatSelectModule,
     MatAutocompleteModule,
     MatChipsModule,
+    MatMenuModule,
     MatCheckboxModule,
     FlexLayoutModule,
 

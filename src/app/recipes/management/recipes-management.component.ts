@@ -15,6 +15,7 @@ import { MessageService } from '../../core/message/message.service';
 export class RecipesManagementBaseComponent implements OnInit {
   isPosting = false;
   recipeFetching = false;
+  hasError = false;
 
   // Categories
   categoryList: Category[] = [];
@@ -332,6 +333,14 @@ export class RecipesManagementBaseComponent implements OnInit {
         return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
       });
   }
+
+  saveRecipe() {
+    if (this.formGroup.invalid) {
+      this.hasError = true;
+      return;
+    }
+    this.hasError = false;
+  }
 }
 
 
@@ -357,6 +366,8 @@ export class RecipesManagementCreateComponent extends RecipesManagementBaseCompo
    * Save recipe
    */
   saveRecipe() {
+    super.saveRecipe();
+
     if (this.formGroup.valid) {
       this.isPosting = true;
       const data = {
@@ -443,6 +454,8 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
    * Save recipe
    */
   saveRecipe() {
+    super.saveRecipe();
+
     if (this.formGroup.valid) {
       this.isPosting = true;
       const data = {
