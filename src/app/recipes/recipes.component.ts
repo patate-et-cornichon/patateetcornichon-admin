@@ -78,7 +78,7 @@ export class RecipesComponent implements OnInit {
     const data: object = {
       published: e.checked,
     };
-    this.recipesService.updateRecipe(recipeSlug, data)
+    this.recipesService.patchRecipe(recipeSlug, data)
       .subscribe(
         () => this.messageService.showMessage('Recette mise à jour !')
       );

@@ -24,9 +24,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { BlogComponent } from './blog.component';
 import { BlogRoutingModule } from './blog.routing';
+import { BlogService } from './blog.service';
 import { DialogsModule } from '../shared/dialogs/dialogs.module';
 import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
-import { CapitalizeFirstPipe } from '../pipes/capitalize-first.pipe';
+import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
 
 
 @NgModule({
@@ -54,14 +55,15 @@ import { CapitalizeFirstPipe } from '../pipes/capitalize-first.pipe';
     FlexLayoutModule,
 
     BlogRoutingModule,
+    CapitalizeFirstModule,
     DialogsModule,
     MatFileInputModule,
   ],
   declarations: [
     BlogComponent,
-    CapitalizeFirstPipe,
   ],
   providers: [
+    BlogService,
   ]
 })
 export class BlogModule {

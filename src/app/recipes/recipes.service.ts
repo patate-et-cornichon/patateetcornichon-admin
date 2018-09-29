@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Recipe, PaginatedRecipes, Category, Tag, RecipeIngredient, Ingredient, Unit } from './recipes.interface';
+import { Recipe, PaginatedRecipes, Category, Tag, Ingredient, Unit } from './recipes.interface';
 import { RecipesModule } from './recipes.module';
 
 
@@ -39,27 +39,17 @@ export class RecipesService {
   /**
    * PATCH: update recipe
    */
-  patchRecipe(slug: string, data: Recipe): Observable<Recipe> {
+  patchRecipe(slug: string, data: Object): Observable<Recipe> {
     return this.http.patch<Recipe>(`${environment.baseUrl}/recipes/${slug}/`, data);
-  }
-
-  /**
-   * PATCH: update recipe identified by its slug.
-   *
-   * @param recipeSlug
-   * @param data
-   */
-  updateRecipe(recipeSlug: string, data: object): Observable<Recipe> {
-    return this.http.patch<Recipe>(`${environment.baseUrl}/recipes/${recipeSlug}/`, data);
   }
 
   /**
    * DELETE: delete a recipe from server
    *
-   * @param recipeSlug
+   * @param slug
    */
-  deleteRecipe(recipeSlug: string): Observable<null> {
-    return this.http.delete<null>(`${environment.baseUrl}/recipes/${recipeSlug}/`);
+  deleteRecipe(slug: string): Observable<null> {
+    return this.http.delete<null>(`${environment.baseUrl}/recipes/${slug}/`);
   }
 
   /**
