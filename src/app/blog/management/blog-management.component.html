@@ -1,5 +1,127 @@
-<div id="editor">
-  <p>Hello World!</p>
-  <p>Some initial <strong>bold</strong> text</p>
-  <p><br></p>
-</div>
+<h1 class="mat-h1">{{ pageTitle }}</h1>
+
+<form [formGroup]="formGroup" (submit)="saveStory()" *ngIf="!storyFetching">
+
+  <mat-vertical-stepper #stepper (selectionChange)="selectionChange($event)">
+    <!-- First step -->
+    <mat-step>
+      <ng-template matStepLabel>Général</ng-template>
+      <div fxLayout="column">
+        <mat-checkbox formControlName="published">Publié ?</mat-checkbox>
+
+        <!-- Authors field-->
+        <mat-form-field>
+          <mat-select placeholder="Auteurs" formControlName="authors"  multiple required>
+            <mat-option *ngFor="let author of authorsList" [value]="author.id">
+              {{ author.first_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Full Title fields -->
+        <div fxLayout="row" fxLayoutGap="40px">
+          <mat-form-field fxFlex="1 1 auto">
+            <input matInput placeholder="Titre" formControlName="title" required>
+          </mat-form-field>
+          <mat-form-field fxFlex="1 1 auto">
+            <input matInput placeholder="Sous-titre" formControlName="sub_title" required>
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <input matInput (keyup)="changeSlug()" placeholder="Titre complet" formControlName="full_title" required>
+        </mat-form-field>
+
+        <!-- Slug field -->
+        <mat-form-field>
+          <input matInput placeholder="Slug" formControlName="slug" required>
+        </mat-form-field>
+
+        <!-- Tags field -->
+        <mat-form-field>
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let tag of tags"
+              [selectable]="true"
+              [removable]="true"
+              (removed)="removeTag(tag)">
+              {{ tag }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Tags"
+              #tagInput
+              formControlName="tags"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="false"
+              (matChipInputTokenEnd)="addTag($event)">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{ tag }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- Images fields -->
+        <div fxLayout="row" fxLayoutGap="40px">
+          <mat-form-field fxFlex="1 1 auto">
+            <app-mat-file-input
+              formControlName="main_picture"
+              placeholder="Image principale"
+              required
+            >
+            </app-mat-file-input>
+          </mat-form-field>
+          <div fxFlex="1 1 auto"></div>
+        </div>
+      </div>
+
+      <div>
+        <button mat-stroked-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+
+    <!-- Second step -->
+    <mat-step>
+      <ng-template matStepLabel>Contenu</ng-template>
+      <div fxLayout="column">
+        <div id="editor"></div>
+        <input type="hidden" id="content" formControlName="content">
+      </div>
+    </mat-step>
+
+    <!-- Third step -->
+    <mat-step>
+      <ng-template matStepLabel>SEO</ng-template>
+      <div fxLayout="column">
+        <mat-form-field>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            placeholder="Meta description"
+            formControlName="meta_description"
+            #meta_description
+            maxlength="300"
+            required
+          >
+          </textarea>
+          <mat-hint align="end">{{ meta_description.value.length }} / 300</mat-hint>
+        </mat-form-field>
+      </div>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="isPosting">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+      <mat-error *ngIf="hasError" class="form-error">
+        Une erreur est présente dans le formulaire
+      </mat-error>
+    </mat-step>
+  </mat-vertical-stepper>
+</form>

@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -11,12 +11,18 @@ import { Story } from '../blog.interface';
 import { BlogService } from '../blog.service';
 import { map, startWith } from 'rxjs/operators';
 import { MessageService } from '../../core/message/message.service';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { User } from '../../core/auth/auth.interface';
+import { AuthService } from '../../core/auth/auth.service';
 
 
 export class BlogManagementBaseComponent implements OnInit {
   isPosting = false;
   storyFetching = false;
   hasError = false;
+
+  // Author
+  authorsList: User[] = [];
 
   // Tags
   filteredTags: Observable<string[]>;
@@ -26,6 +32,9 @@ export class BlogManagementBaseComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formGroup = new FormGroup({
     published: new FormControl(false),
+    authors: new FormControl(null, [
+      Validators.required,
+    ]),
     title: new FormControl(null, [
       Validators.required,
     ]),
@@ -38,11 +47,11 @@ export class BlogManagementBaseComponent implements OnInit {
     slug: new FormControl(null, [
       Validators.required,
     ]),
-    categories: new FormControl(null, [
-      Validators.required,
-    ]),
     tags: new FormControl(null),
     main_picture: new FormControl(null, [
+      Validators.required,
+    ]),
+    content: new FormControl(null, [
       Validators.required,
     ]),
     meta_description: new FormControl(null, [
@@ -74,12 +83,28 @@ export class BlogManagementBaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Get Authors
+    this.blogService
+      .getAuthors()
+      .subscribe(
+        authors => this.authorsList = authors,
+      );
+
     // Get tags
-    // this.blogService
-    //   .getTags()
-    //   .subscribe(
-    //     tags => this.tagList = tags.map(tag => tag.name),
-    //   );
+    this.blogService
+      .getTags()
+      .subscribe(
+        tags => this.tagList = tags.map(tag => tag.name),
+      );
+  }
+
+  selectionChange(event: StepperSelectionEvent): void {
+    if (event.selectedIndex === 1 && !this.editor) {
+      this.initEditor();
+    }
+  }
+
+  initEditor(): void {
     const toolbarOptions = [
       [{'header': [1, 2, 3, 4, 5, 6, false]}],
       ['bold', 'italic', 'underline', 'strike'],
@@ -95,7 +120,6 @@ export class BlogManagementBaseComponent implements OnInit {
       [{'align': []}],
 
       ['clean'],
-      ['code'],
     ];
     this.editor = new Quill('#editor', {
       modules: {
@@ -104,6 +128,10 @@ export class BlogManagementBaseComponent implements OnInit {
       theme: 'snow',
     });
     this.editor.getModule('toolbar').addHandler('image', () => this._selectLocalImage());
+    this.editor.on('text-change', () => {
+      const content = this.editor.root.innerHTML;
+      this.formGroup.controls['content'].setValue(content);
+    });
   }
 
   /**
@@ -112,7 +140,7 @@ export class BlogManagementBaseComponent implements OnInit {
    *
    * @private
    */
-  _selectLocalImage() {
+  _selectLocalImage(): void {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.click();
@@ -211,7 +239,7 @@ export class BlogManagementBaseComponent implements OnInit {
   }
 
   saveStory() {
-    if (this.formGroup.invalid) {
+    if (this.formGroup.invalid || !this.tags.length) {
       this.hasError = true;
       return;
     }
@@ -226,12 +254,23 @@ export class BlogManagementBaseComponent implements OnInit {
   styleUrls: ['./blog-management.component.scss']
 })
 export class BlogManagementCreateComponent extends BlogManagementBaseComponent implements OnInit {
+
+  pageTitle = 'Ajouter un article';
+
   constructor(
     protected blogService: BlogService,
     protected messageService: MessageService,
     protected router: Router,
+    private authService: AuthService,
   ) {
     super(blogService, messageService, router);
+  }
+  ngOnInit() {
+    super.ngOnInit();
+
+    // Set the default user to the current user
+    const user: User = this.authService.getUser();
+    this.formGroup.controls['authors'].setValue([user.id]);
   }
 
   /**
@@ -267,6 +306,8 @@ export class BlogManagementCreateComponent extends BlogManagementBaseComponent i
 })
 export class BlogManagementEditComponent extends BlogManagementBaseComponent implements OnInit {
 
+  pageTitle = 'Éditer un article';
+
   slug: string;
   story: Story;
 
@@ -274,7 +315,7 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
     protected blogService: BlogService,
     protected messageService: MessageService,
     protected router: Router,
-    protected route: ActivatedRoute,
+    private route: ActivatedRoute,
   ) {
     super(blogService, messageService, router);
 
@@ -301,7 +342,17 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
   _populateData(story: Story): void {
     // Populate with values
     this.formGroup.patchValue(story);
+    // Update complex fields
+    this.formGroup.get('authors').setValue(
+      story.authors.map(author => author.id),
+    );
     this.tags = story.tags.map(tag => tag.name);
+  }
+
+  initEditor(): void {
+    super.initEditor();
+
+    this.editor.root.innerHTML = this.formGroup.get('content').value;
   }
 
   /**

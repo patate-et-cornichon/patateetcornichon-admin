@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Story, Tag, PaginatedStories } from './blog.interface';
 import { BlogModule } from './blog.module';
+import { User } from '../core/auth/auth.interface';
 
 
 @Injectable({
@@ -50,6 +51,20 @@ export class BlogService {
    */
   deleteStory(slug: string): Observable<null> {
     return this.http.delete<null>(`${environment.baseUrl}/stories/${slug}/`);
+  }
+
+  /**
+   * GET: Get story tags from server
+   */
+  getTags(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${environment.baseUrl}/stories/tags/`);
+  }
+
+  /**
+   * GET: Get story authors from server
+   */
+  getAuthors(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.baseUrl}/stories/authors/`);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Recipe } from '../recipes/recipes.interface';
+import { User } from '../core/auth/auth.interface';
 
 
 export interface Tag {
@@ -18,6 +18,7 @@ export interface Story {
   main_picture: string;
   content: string;
   tags: Tag[];
+  authors: User[];
   comments_count: number;
   meta_description: string;
 }

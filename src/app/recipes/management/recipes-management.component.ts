@@ -350,6 +350,9 @@ export class RecipesManagementBaseComponent implements OnInit {
   styleUrls: ['./recipes-management.component.scss']
 })
 export class RecipesManagementCreateComponent extends RecipesManagementBaseComponent implements OnInit {
+
+  pageTitle = 'Ajouter une recette';
+
   constructor(
     protected recipesService: RecipesService,
     protected messageService: MessageService,
@@ -394,6 +397,8 @@ export class RecipesManagementCreateComponent extends RecipesManagementBaseCompo
   styleUrls: ['./recipes-management.component.scss']
 })
 export class RecipesManagementEditComponent extends RecipesManagementBaseComponent implements OnInit {
+
+  pageTitle = 'Éditer une recette';
 
   slug: string;
   recipe: Recipe;
