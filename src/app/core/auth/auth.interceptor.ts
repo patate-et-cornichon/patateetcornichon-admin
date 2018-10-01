@@ -29,10 +29,17 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     }
 
     // Add custon header in all requests
-    const headers = new HttpHeaders({
-      'Authorization': `JWT ${this.authService.getToken()}`,
-      'Content-Type': 'application/json'
-    });
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', `JWT ${this.authService.getToken()}`);
+    headers = headers.set('Content-Type', 'application/json');
+    for (const key of req.headers.keys()) {
+      const value = req.headers.get(key);
+      if (value) {
+        headers = headers.set(key, req.headers.get(key));
+      } else {
+        headers = headers.delete(key);
+      }
+    }
     const newRequest = req.clone({headers});
 
     return next.handle(newRequest)

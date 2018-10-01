@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -50,5 +50,21 @@ export class BlogService {
    */
   deleteStory(slug: string): Observable<null> {
     return this.http.delete<null>(`${environment.baseUrl}/stories/${slug}/`);
+  }
+
+  /**
+   * Upload image to the server
+   *
+   * @param file
+   */
+  uploadImage(file: File): Observable<{ image_url: string }> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+
+    const headers = new HttpHeaders({
+      'Content-Type': '',
+    });
+
+    return this.http.post<{ image_url: string }>(`${environment.baseUrl}/stories/upload-image/`, formData, {headers});
   }
 }

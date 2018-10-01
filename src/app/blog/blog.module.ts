@@ -28,6 +28,7 @@ import { BlogService } from './blog.service';
 import { DialogsModule } from '../shared/dialogs/dialogs.module';
 import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
 import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
+import { BlogManagementCreateComponent, BlogManagementEditComponent } from './management/blog-management.component';
 
 
 @NgModule({
@@ -61,6 +62,8 @@ import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-firs
   ],
   declarations: [
     BlogComponent,
+    BlogManagementCreateComponent,
+    BlogManagementEditComponent,
   ],
   providers: [
     BlogService,
