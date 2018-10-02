@@ -23,7 +23,11 @@ const routes: Routes = [
       {
         path: 'blog',
         loadChildren: '../blog/blog.module#BlogModule'
-      }
+      },
+      {
+        path: 'comments',
+        loadChildren: '../comment/comment.module#CommentModule'
+      },
     ],
   },
   {
