@@ -8,6 +8,9 @@ import {
   MatSlideToggleModule,
   MatIconModule,
   MatButtonModule,
+  MatDialogModule,
+  MatMenuModule,
+  MatChipsModule,
 } from '@angular/material';
 
 import { CommentComponent } from './comment.component';
@@ -25,6 +28,9 @@ import { CommentService } from './comment.service';
     MatSlideToggleModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatChipsModule,
 
     CommentRoutingModule,
   ],
