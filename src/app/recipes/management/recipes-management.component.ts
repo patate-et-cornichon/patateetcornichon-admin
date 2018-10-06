@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import slugify from 'slugify';
 
 import { map, startWith } from 'rxjs/operators';
+import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
 import { MessageService } from '../../core/message/message.service';
 import { Category, Recipe } from '../recipes.interface';
 import { RecipesService } from '../recipes.service';
@@ -14,8 +15,8 @@ import { RecipesService } from '../recipes.service';
 
 export class RecipesManagementBaseComponent implements OnInit {
   isPosting = false;
-  recipeFetching = false;
   hasError = false;
+  editMode = false;
 
   // Categories
   categoryList: Category[] = [];
@@ -399,6 +400,7 @@ export class RecipesManagementCreateComponent extends RecipesManagementBaseCompo
 export class RecipesManagementEditComponent extends RecipesManagementBaseComponent implements OnInit {
 
   pageTitle = 'Éditer une recette';
+  editMode = true;
 
   slug: string;
   recipe: Recipe;
@@ -407,19 +409,20 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
     protected recipesService: RecipesService,
     protected messageService: MessageService,
     protected router: Router,
-    protected route: ActivatedRoute,
+    private route: ActivatedRoute,
+    private layoutWrapperService: LayoutWrapperService,
   ) {
     super(recipesService, messageService, router);
 
     this.slug = this.route.snapshot.params.slug;
 
-    this.recipeFetching = true;
+    this.layoutWrapperService.setLoadingState(true);
     this.recipesService.getRecipe(this.slug)
       .subscribe(
         recipe => {
           this.recipe = recipe;
-          this.recipeFetching = false;
           this._populateData(recipe);
+          this.layoutWrapperService.setLoadingState(false);
         },
         () => this.router.navigateByUrl('/recipes'),
       );

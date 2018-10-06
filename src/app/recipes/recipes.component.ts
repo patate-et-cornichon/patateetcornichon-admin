@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material';
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
+import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
 import { MessageService } from '../core/message/message.service';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
 import { Recipe } from './recipes.interface';
@@ -25,7 +26,6 @@ export class RecipesComponent implements OnInit {
   ];
   resultsLength = 0;
   pageSize = 0;
-  isLoadingResults = true;
   data: Recipe[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -34,6 +34,7 @@ export class RecipesComponent implements OnInit {
     private recipesService: RecipesService,
     private messageService: MessageService,
     private dialog: MatDialog,
+    private layoutWrapperService: LayoutWrapperService,
   ) {
   }
 
@@ -49,19 +50,19 @@ export class RecipesComponent implements OnInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          this.isLoadingResults = true;
+          this.layoutWrapperService.setLoadingState(true);
           return this.recipesService.getRecipes(this.paginator.pageIndex + 1);
         }),
         map(data => {
           // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
+          this.layoutWrapperService.setLoadingState(false);
           this.resultsLength = data.count;
           this.pageSize = data.page_size;
 
           return data.results;
         }),
         catchError(() => {
-          this.isLoadingResults = false;
+          this.layoutWrapperService.setLoadingState(false);
           return observableOf([]);
         })
       )

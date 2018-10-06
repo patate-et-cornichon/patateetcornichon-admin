@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../core/auth/auth.service';
-import { MessageService } from '../core/message/message.service';
+import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
 
 
 @Component({
@@ -25,8 +25,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private messageService: MessageService,
     private router: Router,
+    private layoutWrapperService: LayoutWrapperService,
   ) {
   }
 
@@ -35,11 +35,13 @@ export class LoginComponent {
    */
   onSubmit() {
     this.isSubmitted = true;
+    this.layoutWrapperService.setLoadingState(true);
     this.authService
       .login(this.loginForm.value)
       .subscribe(
         () => this.router.navigate(['/']),
         () => this.isSubmitted = false,
+        () => this.layoutWrapperService.setLoadingState(false),
       );
   }
 }

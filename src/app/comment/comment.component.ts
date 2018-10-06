@@ -4,6 +4,7 @@ import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
 import { MessageService } from '../core/message/message.service';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
 import { Comment, PaginatedComments } from './comment.interface';
@@ -91,7 +92,6 @@ export class CommentComponent implements OnInit {
   resultsLength = 0;
   pageSize = 0;
   comment_max_length = 20;
-  isLoadingResults = true;
   data: Comment[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -100,6 +100,7 @@ export class CommentComponent implements OnInit {
     private commentService: CommentService,
     private messageService: MessageService,
     private dialog: MatDialog,
+    private layoutWrapperService: LayoutWrapperService,
   ) {
   }
 
@@ -115,19 +116,19 @@ export class CommentComponent implements OnInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          this.isLoadingResults = true;
+          this.layoutWrapperService.setLoadingState(true);
           return this.commentService.getComments(this.paginator.pageIndex + 1);
         }),
         map((data: PaginatedComments) => {
           // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
+          this.layoutWrapperService.setLoadingState(false);
           this.resultsLength = data.count;
           this.pageSize = data.page_size;
 
           return data.results;
         }),
         catchError(() => {
-          this.isLoadingResults = false;
+          this.layoutWrapperService.setLoadingState(false);
           return observableOf([]);
         })
       )
@@ -207,12 +208,14 @@ export class CommentComponent implements OnInit {
    * @private
    */
   _refreshData(): void {
+    this.layoutWrapperService.setLoadingState(true);
     this.commentService.getComments(this.paginator.pageIndex + 1)
       .subscribe(
         data => {
           this.resultsLength = data.count;
           this.pageSize = data.page_size;
           this.data = data.results;
+          this.layoutWrapperService.setLoadingState(false);
         }
       );
   }

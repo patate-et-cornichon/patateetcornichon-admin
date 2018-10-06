@@ -3,6 +3,7 @@ import { MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material
 import { of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
+import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
 import { MessageService } from '../core/message/message.service';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
 import { Story } from './blog.interface';
@@ -24,7 +25,6 @@ export class BlogComponent implements OnInit {
   ];
   resultsLength = 0;
   pageSize = 0;
-  isLoadingResults = true;
   data: Story[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,6 +33,7 @@ export class BlogComponent implements OnInit {
     private blogService: BlogService,
     private messageService: MessageService,
     private dialog: MatDialog,
+    private layoutWrapperServer: LayoutWrapperService,
   ) {
   }
 
@@ -48,19 +49,19 @@ export class BlogComponent implements OnInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          this.isLoadingResults = true;
+          this.layoutWrapperServer.setLoadingState(true);
           return this.blogService.getStories(this.paginator.pageIndex + 1);
         }),
         map(data => {
           // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
+          this.layoutWrapperServer.setLoadingState(false);
           this.resultsLength = data.count;
           this.pageSize = data.page_size;
 
           return data.results;
         }),
         catchError(() => {
-          this.isLoadingResults = false;
+          this.layoutWrapperServer.setLoadingState(false);
           return observableOf([]);
         })
       )

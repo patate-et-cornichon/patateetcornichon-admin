@@ -1,8 +1,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { HttpClient } from '@angular/common/http';
 import {
-  AfterViewInit,
   Component,
   DoCheck,
   ElementRef,
@@ -16,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
-import { mixinErrorState, CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl, MatInput } from '@angular/material';
+import { mixinErrorState, CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl } from '@angular/material';
 import { Subject } from 'rxjs';
 
 
@@ -143,7 +141,6 @@ export class MatFileInputComponent
     private fm: FocusMonitor,
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
-    private http: HttpClient,
   ) {
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
     if (this.ngControl != null) {

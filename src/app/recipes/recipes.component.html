@@ -7,11 +7,7 @@
   </a>
 </div>
 
-<div class="list-container mat-elevation-z8">
-  <div class="list-loading-shade" *ngIf="isLoadingResults">
-    <mat-spinner></mat-spinner>
-  </div>
-
+<div class="list-container mat-elevation-z8" [hidden]="!data.length">
   <div class="list-table-container">
     <table mat-table [dataSource]="data" class="list-table">
 

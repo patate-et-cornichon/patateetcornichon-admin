@@ -1,4 +1,4 @@
-import { Breakpoints, BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 

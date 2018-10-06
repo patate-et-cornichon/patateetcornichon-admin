@@ -7,7 +7,7 @@ import {
   MatGridListModule,
   MatIconModule,
   MatListModule,
-  MatMenuModule,
+  MatMenuModule, MatProgressSpinnerModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatToolbarModule,
@@ -15,6 +15,11 @@ import {
 
 import { AuthHttpInterceptor } from './auth/auth.interceptor';
 import { CoreRoutingModule } from './core-routing.module';
+import {
+  LayoutWrapperComponent,
+  LayoutWrapperDirective,
+} from './layout/layout-wrapper.component';
+import { LayoutWrapperService } from './layout/layout-wrapper.service';
 import {
   LayoutComponent,
   PrivateLayoutComponent,
@@ -34,20 +39,29 @@ import { NavComponent } from './nav/nav.component';
     MatCardModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
 
     CoreRoutingModule,
   ],
   exports: [
     NavComponent,
     LayoutComponent,
+    LayoutWrapperComponent,
+    LayoutWrapperDirective,
   ],
   declarations: [
     PrivateLayoutComponent,
     LayoutComponent,
     NavComponent,
+    LayoutWrapperComponent,
+    LayoutWrapperDirective,
+  ],
+  entryComponents: [
+    LayoutWrapperComponent,
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true},
+    LayoutWrapperService,
   ],
 })
 export class CoreModule {

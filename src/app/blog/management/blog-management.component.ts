@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import Quill from 'quill';
@@ -11,6 +11,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { map, startWith } from 'rxjs/operators';
 import { User } from '../../core/auth/auth.interface';
 import { AuthService } from '../../core/auth/auth.service';
+import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
 import { MessageService } from '../../core/message/message.service';
 import { Story } from '../blog.interface';
 import { BlogService } from '../blog.service';
@@ -18,8 +19,8 @@ import { BlogService } from '../blog.service';
 
 export class BlogManagementBaseComponent implements OnInit {
   isPosting = false;
-  storyFetching = false;
   hasError = false;
+  editMode = false;
 
   // Author
   authorsList: User[] = [];
@@ -307,6 +308,7 @@ export class BlogManagementCreateComponent extends BlogManagementBaseComponent i
 export class BlogManagementEditComponent extends BlogManagementBaseComponent implements OnInit {
 
   pageTitle = 'Éditer un article';
+  editMode = true;
 
   slug: string;
   story: Story;
@@ -316,18 +318,19 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
     protected messageService: MessageService,
     protected router: Router,
     private route: ActivatedRoute,
+    private layoutWrapperService: LayoutWrapperService,
   ) {
     super(blogService, messageService, router);
 
     this.slug = this.route.snapshot.params.slug;
 
-    this.storyFetching = true;
+    this.layoutWrapperService.setLoadingState(true);
     this.blogService.getStory(this.slug)
       .subscribe(
         story => {
           this.story = story;
-          this.storyFetching = false;
           this._populateData(story);
+          this.layoutWrapperService.setLoadingState(false);
         },
         () => this.router.navigateByUrl('/blog'),
       );
