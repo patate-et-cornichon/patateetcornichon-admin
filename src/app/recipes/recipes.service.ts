@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Recipe, PaginatedRecipes, Category, Tag, Ingredient, Unit } from './recipes.interface';
+import { Category, Ingredient, PaginatedRecipes, Recipe, Tag, Unit } from './recipes.interface';
 import { RecipesModule } from './recipes.module';
 
 

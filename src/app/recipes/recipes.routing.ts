@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { RecipesComponent } from './recipes.component';
 import {
   RecipesManagementCreateComponent,
   RecipesManagementEditComponent,
 } from './management/recipes-management.component';
+import { RecipesComponent } from './recipes.component';
 
 
 const routes: Routes = [

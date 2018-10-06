@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
-  MatFormFieldModule,
   MatButtonModule,
-  MatSnackBarModule,
-  MatInputModule,
   MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSnackBarModule,
 } from '@angular/material';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
 import { LoginRoutingModule } from './login.routing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [

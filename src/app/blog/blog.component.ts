@@ -3,10 +3,10 @@ import { MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material
 import { of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
-import { BlogService } from './blog.service';
 import { MessageService } from '../core/message/message.service';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
 import { Story } from './blog.interface';
+import { BlogService } from './blog.service';
 
 
 @Component({

@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Story, Tag, PaginatedStories } from './blog.interface';
-import { BlogModule } from './blog.module';
 import { User } from '../core/auth/auth.interface';
+import { PaginatedStories, Story, Tag } from './blog.interface';
+import { BlogModule } from './blog.module';
 
 
 @Injectable({

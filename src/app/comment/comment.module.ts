@@ -1,26 +1,26 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatSnackBarModule,
-  MatProgressSpinnerModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSlideToggleModule,
-  MatIconModule,
   MatButtonModule,
-  MatDialogModule,
-  MatMenuModule,
-  MatChipsModule,
   MatCardModule,
-  MatInputModule,
+  MatChipsModule,
+  MatDialogModule,
   MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatTableModule,
 } from '@angular/material';
 
+import { DialogsModule } from '../shared/dialogs/dialogs.module';
 import { CommentComponent, CommentDialogComponent } from './comment.component';
 import { CommentRoutingModule } from './comment.routing';
 import { CommentService } from './comment.service';
-import { DialogsModule } from '../shared/dialogs/dialogs.module';
 
 
 @NgModule({

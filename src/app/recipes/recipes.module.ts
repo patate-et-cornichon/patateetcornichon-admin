@@ -1,37 +1,37 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatSnackBarModule,
-  MatProgressSpinnerModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatSlideToggleModule,
-  MatCardModule,
-  MatIconModule,
-  MatButtonModule,
-  MatStepperModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
   MatAutocompleteModule,
-  MatChipsModule,
+  MatButtonModule,
+  MatCardModule,
   MatCheckboxModule,
+  MatChipsModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
   MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
 } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { RecipesComponent } from './recipes.component';
+import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
+import { DialogsModule } from '../shared/dialogs/dialogs.module';
+import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
 import {
   RecipesManagementCreateComponent,
   RecipesManagementEditComponent,
 } from './management/recipes-management.component';
+import { RecipesComponent } from './recipes.component';
 import { RecipesRoutingModule } from './recipes.routing';
 import { RecipesService } from './recipes.service';
-import { DialogsModule } from '../shared/dialogs/dialogs.module';
-import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
-import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
 
 
 @NgModule({

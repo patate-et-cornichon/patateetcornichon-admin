@@ -1,19 +1,19 @@
-import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import Quill from 'quill';
 import { Observable } from 'rxjs';
 import slugify from 'slugify';
-import Quill from 'quill';
 
-import { Story } from '../blog.interface';
-import { BlogService } from '../blog.service';
-import { map, startWith } from 'rxjs/operators';
-import { MessageService } from '../../core/message/message.service';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { map, startWith } from 'rxjs/operators';
 import { User } from '../../core/auth/auth.interface';
 import { AuthService } from '../../core/auth/auth.service';
+import { MessageService } from '../../core/message/message.service';
+import { Story } from '../blog.interface';
+import { BlogService } from '../blog.service';
 
 
 export class BlogManagementBaseComponent implements OnInit {

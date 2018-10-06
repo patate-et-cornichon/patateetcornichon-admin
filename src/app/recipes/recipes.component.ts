@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material';
-import { Observable, of as observableOf } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
-import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
-import { RecipesService } from './recipes.service';
-import { Recipe } from './recipes.interface';
 import { MessageService } from '../core/message/message.service';
+import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
+import { Recipe } from './recipes.interface';
+import { RecipesService } from './recipes.service';
 
 
 @Component({

@@ -1,15 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import slugify from 'slugify';
 
-import { Category, Recipe } from '../recipes.interface';
-import { RecipesService } from '../recipes.service';
 import { map, startWith } from 'rxjs/operators';
 import { MessageService } from '../../core/message/message.service';
+import { Category, Recipe } from '../recipes.interface';
+import { RecipesService } from '../recipes.service';
 
 
 export class RecipesManagementBaseComponent implements OnInit {

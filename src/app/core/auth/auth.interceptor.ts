@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpInterceptor,
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
-  HttpRequest,
   HttpHeaders,
-  HttpErrorResponse,
+  HttpInterceptor,
+  HttpRequest,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
+import { Injectable } from '@angular/core';
+import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MessageService } from '../message/message.service';
+import { AuthService } from './auth.service';
 
 
 @Injectable()

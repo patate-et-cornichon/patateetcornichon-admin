@@ -1,25 +1,25 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import {
-  MatToolbarModule,
   MatButtonModule,
+  MatCardModule,
+  MatGridListModule,
+  MatIconModule,
+  MatListModule,
+  MatMenuModule,
   MatSidenavModule,
   MatSnackBarModule,
-  MatIconModule,
-  MatMenuModule,
-  MatListModule,
-  MatGridListModule,
-  MatCardModule,
+  MatToolbarModule,
 } from '@angular/material';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { AuthHttpInterceptor } from './auth/auth.interceptor';
+import { CoreRoutingModule } from './core-routing.module';
 import {
-  PrivateLayoutComponent,
   LayoutComponent,
+  PrivateLayoutComponent,
 } from './layout/layout.component';
 import { NavComponent } from './nav/nav.component';
-import { CoreRoutingModule } from './core-routing.module';
-import { AuthHttpInterceptor } from './auth/auth.interceptor';
 
 
 @NgModule({

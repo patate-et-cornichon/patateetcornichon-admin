@@ -1,13 +1,13 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange } from '@angular/material';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange, MAT_DIALOG_DATA } from '@angular/material';
+import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { of as observableOf, forkJoin } from 'rxjs';
 
-import { CommentService } from './comment.service';
-import { Comment, PaginatedComments } from './comment.interface';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from '../core/message/message.service';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Comment, PaginatedComments } from './comment.interface';
+import { CommentService } from './comment.service';
 
 
 @Component({

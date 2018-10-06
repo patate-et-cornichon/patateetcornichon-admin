@@ -1,33 +1,33 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatSnackBarModule,
-  MatProgressSpinnerModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatSlideToggleModule,
-  MatCardModule,
-  MatIconModule,
-  MatButtonModule,
-  MatStepperModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
   MatAutocompleteModule,
-  MatChipsModule,
+  MatButtonModule,
+  MatCardModule,
   MatCheckboxModule,
+  MatChipsModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
   MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
 } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
+import { DialogsModule } from '../shared/dialogs/dialogs.module';
+import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
 import { BlogComponent } from './blog.component';
 import { BlogRoutingModule } from './blog.routing';
 import { BlogService } from './blog.service';
-import { DialogsModule } from '../shared/dialogs/dialogs.module';
-import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
-import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
 import { BlogManagementCreateComponent, BlogManagementEditComponent } from './management/blog-management.component';
 
 

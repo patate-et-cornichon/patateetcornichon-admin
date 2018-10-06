@@ -1,3 +1,6 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { HttpClient } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
@@ -12,12 +15,9 @@ import {
   Self,
   ViewChild
 } from '@angular/core';
-import { CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl, MatInput, mixinErrorState } from '@angular/material';
-import { Subject } from 'rxjs';
 import { ControlValueAccessor, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
-import { FocusMonitor } from '@angular/cdk/a11y';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { HttpClient } from '@angular/common/http';
+import { mixinErrorState, CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl, MatInput } from '@angular/material';
+import { Subject } from 'rxjs';
 
 
 /* Boilerplate for applying mixins to MatFileInput. */
