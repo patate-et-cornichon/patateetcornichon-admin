@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { PaginatedComments } from './comment.interface';
+import { Comment, PaginatedComments } from './comment.interface';
 import { CommentModule } from './comment.module';
 import { environment } from '../../environments/environment';
 
@@ -20,6 +20,15 @@ export class CommentService {
    */
   getComments(page: number = 1): Observable<PaginatedComments> {
     return this.http.get<PaginatedComments>(`${environment.baseUrl}/comments/?page=${page}`);
+  }
+
+  /**
+   * POST: post comment
+   *
+   * @param data
+   */
+  postComment(data: Object): Observable<Comment> {
+    return this.http.post<Comment>(`${environment.baseUrl}/comments/`, data);
   }
 
   /**

@@ -9,12 +9,17 @@ export interface Comment {
     first_name: string;
     last_name?: string;
     website?: string;
+    avatar?: string;
   };
   registered_author?: User;
   be_notified: boolean;
   content: string;
   content_type: string;
   object_id: string;
+  commented_object: {
+    full_title: string;
+    slug: string;
+  };
   parent?: string;
 }
 

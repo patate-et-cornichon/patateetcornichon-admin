@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Commentaire</h2>
+
+<form [formGroup]="formGroup" (submit)="submit()">
+  <mat-dialog-content>
+    <mat-card *ngIf="comment.registered_author || comment.unregistered_author; let author">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar" [ngStyle]="{backgroundImage: 'url(' + author.avatar + ')'}"></div>
+        <mat-card-title>
+          {{ author.first_name }} {{ author.last_name }}
+          <span *ngIf="author.website">
+          (<a [href]="author.website" target="_blank">{{ author.website }}</a>)
+        </span>
+        </mat-card-title>
+        <mat-card-subtitle><a [href]="'mailto:' + author.email">{{ author.email }}</a></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ comment.content }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Répondre</mat-label>
+      <textarea matInput matTextareaAutosize formControlName="content" required></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button (click)="close($event)">Fermer</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="isPosting">Répondre</button>
+  </mat-dialog-actions>
+</form>
+

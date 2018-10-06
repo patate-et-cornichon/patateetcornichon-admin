@@ -1,12 +1,75 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material';
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange } from '@angular/material';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, forkJoin } from 'rxjs';
 
 import { CommentService } from './comment.service';
 import { Comment, PaginatedComments } from './comment.interface';
 import { MessageService } from '../core/message/message.service';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+
+@Component({
+  selector: 'app-comment-dialog',
+  templateUrl: './comment-dialog.component.html',
+  styleUrls: ['./comment-dialog.component.scss'],
+})
+export class CommentDialogComponent {
+  isPosting = false;
+
+  formGroup = new FormGroup({
+    content: new FormControl(null, [
+      Validators.required,
+    ]),
+  });
+
+  constructor(
+    public dialogRef: MatDialogRef<CommentDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public comment: Comment,
+    private commentService: CommentService,
+    private messageService: MessageService,
+  ) {
+  }
+
+  submit() {
+    const content = this.formGroup.get('content');
+    if (content.valid) {
+      this.isPosting = true;
+
+      // Make multiple requests
+      let requests = [];
+      if (!this.comment.is_valid) {
+        requests = [...requests, this.commentService.patchComment(this.comment.id, {is_valid: true})];
+      }
+      const data = {
+        content: content.value,
+        is_valid: true,
+        content_type: this.comment.content_type,
+        object_id: this.comment.object_id,
+        parent: this.comment.parent ? this.comment.parent : this.comment.id,
+      };
+      requests = [...requests, this.commentService.postComment(data)];
+
+      forkJoin(requests).subscribe(
+        () => {
+          this.messageService.showMessage('Réponse enregistrée !');
+          this.dialogRef.close('success');
+        }
+      );
+    }
+  }
+
+  /**
+   * Close dialog modal
+   *
+   * @param e
+   */
+  close(e: Event) {
+    e.preventDefault();
+    this.dialogRef.close();
+  }
+}
 
 
 @Component({
@@ -27,6 +90,7 @@ export class CommentComponent implements OnInit {
   ];
   resultsLength = 0;
   pageSize = 0;
+  comment_max_length = 20;
   isLoadingResults = true;
   data: Comment[] = [];
 
@@ -87,11 +151,30 @@ export class CommentComponent implements OnInit {
   }
 
   /**
+   * Open selected comment dialog
+   *
+   * @param comment
+   */
+  openComment(comment: Comment) {
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
+      data: comment,
+      width: '50%',
+    });
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result === 'success') {
+          this._refreshData();
+        }
+      }
+    );
+  }
+
+  /**
    * Delete comment from server and update comments data
    *
    * @param comment
    */
-  deleteRecipe(comment: Comment) {
+  deleteComment(comment: Comment) {
     // Open a confirmation dialog
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
@@ -110,11 +193,28 @@ export class CommentComponent implements OnInit {
               .subscribe(
                 () => {
                   this.messageService.showMessage('Commentaire supprimé !');
-                  this.data = this.data.filter(e => e.id !== comment.id);
+                  this._refreshData();
                 }
               );
           }
         }
       );
   }
+
+  /**
+   * Refresh data, fetching from server
+   *
+   * @private
+   */
+  _refreshData(): void {
+    this.commentService.getComments(this.paginator.pageIndex + 1)
+      .subscribe(
+        data => {
+          this.resultsLength = data.count;
+          this.pageSize = data.page_size;
+          this.data = data.results;
+        }
+      );
+  }
 }
+

@@ -11,7 +11,7 @@
 
         <!-- Authors field-->
         <mat-form-field>
-          <mat-select placeholder="Auteurs" formControlName="authors"  multiple required>
+          <mat-select placeholder="Auteurs" formControlName="authors" multiple required>
             <mat-option *ngFor="let author of authorsList" [value]="author.id">
               {{ author.first_name }}
             </mat-option>
