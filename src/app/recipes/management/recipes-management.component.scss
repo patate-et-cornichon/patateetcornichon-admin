@@ -3,12 +3,26 @@
   margin-bottom: 15px;
 }
 
+.composition-steps-wrapper {
+  &:first-child {
+    width: 55%;
+  }
+
+  &:last-child {
+    width: 45%;
+  }
+}
+
 .composition-item {
   &:first-child {
     margin-top: 20px;
   }
   margin-bottom: 20px;
   position: relative;
+
+  .small-field {
+    width: 60px;
+  }
 
   .composition-controls {
     position: absolute;
@@ -23,4 +37,28 @@
 
 .form-error {
   margin-top: 15px;
+}
+
+.action-buttons {
+  .mat-icon-button {
+    $icon-small-container-size: 25px;
+    $icon-small-size: 12px;
+
+    width: $icon-small-container-size;
+    height: $icon-small-container-size;
+    line-height: $icon-small-container-size;
+
+    .mat-icon, .mat-icon-button i {
+      line-height: $icon-small-size;
+    }
+
+    .mat-icon {
+      width: $icon-small-size;
+      height: $icon-small-size;
+    }
+
+    .material-icons {
+      font-size: $icon-small-size;
+    }
+  }
 }

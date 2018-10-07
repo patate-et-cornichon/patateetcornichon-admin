@@ -155,83 +155,123 @@
 
     <!-- Fourth step -->
     <mat-step>
-      <ng-template matStepLabel>Composition</ng-template>
-      <div formArrayName="composition" fxLayout="column">
-        <mat-card fxLayout="column"
-                  class="mat-elevation-10 composition-item"
-                  *ngFor="let compositionItem of composition.controls; index as compositionIndex"
-                  [formGroup]="compositionItem"
-        >
-          <div class="composition-controls">
-            <button
-              mat-button color="warn"
-              *ngIf="compositionIndex !== 0"
-              (click)="removeComposition(compositionIndex)"
-            >
-              SUPPRIMER
-            </button>
-            <button mat-button (click)="addComposition()">AJOUTER</button>
-          </div>
-          <mat-form-field>
-            <input type="text" matInput placeholder="Nom de la composition" formControlName="name">
-          </mat-form-field>
-          <div fxLayout="column" formArrayName="ingredients">
-            <div
-              fxLayout="row"
-              fxLayoutAlign="center center"
-              fxLayoutGap="40px"
-              *ngFor="let ingredient of getIngredients(compositionIndex).controls; index as ingredientIndex"
-              [formGroup]="ingredient">
-              <mat-form-field fxFlex="1 1 auto">
-                <input
-                  (keyup)="filterIngredients($event)"
-                  (focus)="filteredIngredients = []"
-                  matInput placeholder="Ingredient"
-                  formControlName="ingredient"
-                  required
-                  [matAutocomplete]="autoIngredient"
-                >
-                <mat-autocomplete #autoIngredient="matAutocomplete">
-                  <mat-option *ngFor="let ingredient of filteredIngredients" [value]="ingredient | capitalizeFirst">
-                    {{ ingredient | capitalizeFirst }}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-              <mat-form-field fxFlex="1 1 auto">
-                <input
-                  (keyup)="filterUnits($event)"
-                  (focus)="filteredUnits = []"
-                  matInput
-                  placeholder="Unité"
-                  formControlName="unit"
-                  [matAutocomplete]="autoUnit"
-                >
-                <mat-autocomplete #autoUnit="matAutocomplete">
-                  <mat-option *ngFor="let unit of filteredUnits" [value]="unit">
-                    {{ unit }}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-              <mat-form-field fxFlex="1 1 auto">
-                <input type="number" matInput placeholder="Quantité" formControlName="quantity">
-              </mat-form-field>
-              <div fxFlex="1 1 100px">
-                <div fxLayout="row" fxLayoutAlign="end end">
-                  <button
-                    mat-icon-button
-                    *ngIf="ingredientIndex !== 0"
-                    (click)="removeIngredient(compositionIndex, ingredientIndex)"
+      <ng-template matStepLabel>Composition et étapes</ng-template>
+      <div fxLayout="row" fxLayoutGap="40px">
+        <!-- Composition -->
+        <div formArrayName="composition" fxFlex="1 1 auto" class="composition-steps-wrapper">
+          <h3>Composition</h3>
+          <mat-card
+            fxLayout="column"
+            class="mat-elevation-10 composition-item"
+            *ngFor="let compositionItem of composition.controls; index as compositionIndex"
+            [formGroup]="compositionItem"
+          >
+            <div class="composition-controls">
+              <button
+                mat-button color="warn"
+                *ngIf="compositionIndex !== 0"
+                (click)="removeComposition(compositionIndex)"
+              >
+                SUPPRIMER
+              </button>
+              <button mat-button (click)="addComposition()">AJOUTER</button>
+            </div>
+            <mat-form-field>
+              <input type="text" matInput placeholder="Nom de la composition" formControlName="name">
+            </mat-form-field>
+            <div fxLayout="column" formArrayName="ingredients">
+              <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="15px"
+                *ngFor="let ingredient of getIngredients(compositionIndex).controls; index as ingredientIndex"
+                [formGroup]="ingredient">
+                <mat-form-field fxFlex="1 1 auto">
+                  <input
+                    (keyup)="filterIngredients($event)"
+                    (focus)="filteredIngredients = []"
+                    matInput placeholder="Ingredient"
+                    formControlName="ingredient"
+                    required
+                    [matAutocomplete]="autoIngredient"
                   >
-                    <mat-icon>close</mat-icon>
-                  </button>
-                  <button mat-icon-button (click)="addIngredient(compositionIndex)">
-                    <mat-icon>add</mat-icon>
-                  </button>
+                  <mat-autocomplete #autoIngredient="matAutocomplete">
+                    <mat-option *ngFor="let ingredient of filteredIngredients" [value]="ingredient | capitalizeFirst">
+                      {{ ingredient | capitalizeFirst }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field class="small-field">
+                  <input type="number" matInput placeholder="Qté" formControlName="quantity">
+                </mat-form-field>
+                <mat-form-field class="small-field">
+                  <input
+                    (keyup)="filterUnits($event)"
+                    (focus)="filteredUnits = []"
+                    matInput
+                    placeholder="Unité"
+                    formControlName="unit"
+                    [matAutocomplete]="autoUnit"
+                  >
+                  <mat-autocomplete #autoUnit="matAutocomplete">
+                    <mat-option *ngFor="let unit of filteredUnits" [value]="unit">
+                      {{ unit }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div fxFlex="1 1 50px">
+                  <div fxLayout="row" fxLayoutAlign="end end" class="action-buttons">
+                    <button
+                      mat-icon-button
+                      *ngIf="ingredientIndex !== 0"
+                      (click)="removeIngredient(compositionIndex, ingredientIndex)"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="addIngredient(compositionIndex)">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
+          </mat-card>
+        </div>
+        <!-- Steps -->
+        <div formArrayName="steps" fxFlex="1 1 auto" class="composition-steps-wrapper">
+          <h3>Étapes</h3>
+          <div fxLayout="row"
+               fxLayoutAlign="center center"
+               fxLayoutGap="15px"
+               *ngFor="let step of steps.controls; index as i"
+          >
+            <mat-form-field fxFlex="1 1 auto">
+            <textarea
+              type="text"
+              [placeholder]="'Étape ' + (i + 1)"
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              [formControlName]="i">
+            </textarea>
+            </mat-form-field>
+            <div fxFlex="1 1 50px">
+              <div fxLayout="row" fxLayoutAlign="end end" class="action-buttons">
+                <button
+                  type="button"
+                  mat-icon-button
+                  *ngIf="i !== 0"
+                  (click)="removeStep(i)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button mat-icon-button (click)="addStep()" type="button">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
-        </mat-card>
+        </div>
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
@@ -242,50 +282,6 @@
     </mat-step>
 
     <!-- Fifth step -->
-    <mat-step>
-      <ng-template matStepLabel>Étapes</ng-template>
-      <div formArrayName="steps" fxLayout="column">
-        <div fxLayout="row"
-             fxLayoutAlign="center center"
-             fxLayoutGap="40px"
-             *ngFor="let step of steps.controls; index as i"
-        >
-          <mat-form-field fxFlex="1 1 auto">
-            <textarea
-              type="text"
-              [placeholder]="'Étape ' + (i + 1)"
-              matInput
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-              [formControlName]="i">
-            </textarea>
-          </mat-form-field>
-          <div fxFlex="1 1 100px">
-            <div fxLayout="row" fxLayoutAlign="end end">
-              <button
-                type="button"
-                mat-icon-button
-                *ngIf="i !== 0"
-                (click)="removeStep(i)"
-              >
-                <mat-icon>close</mat-icon>
-              </button>
-              <button mat-icon-button (click)="addStep()" type="button">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
-          <button mat-stroked-button matStepperNext type="button">Suivant</button>
-        </div>
-      </div>
-    </mat-step>
-
-    <!-- Sixth step -->
     <mat-step>
       <ng-template matStepLabel>SEO</ng-template>
       <div fxLayout="column">
