@@ -1,17 +1,33 @@
-.dashboard-card {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-}
+@import '~@angular/material/theming';
+@import '../../theme';
 
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-}
+$primary: map-get($theme, primary);
 
-.dashboard-card-content {
-  text-align: center;
+.quick-link {
+  outline: none;
+  padding: 15px;
+  width: calc(100% / 4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: box-shadow 200ms;
+  color: mat-color($primary);
+  border: 1px solid mat-color($primary);
+  border-radius: 4px;
+  @include mat-elevation(0);
+
+  &:hover {
+    @include mat-elevation(6);
+  }
+
+  .illustration {
+    width: 150px;
+    padding: 20px 0;
+
+    img {
+      width: 100%;
+    }
+  }
 }

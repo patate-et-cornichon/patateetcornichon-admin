@@ -1,22 +1,30 @@
 <h1 class="mat-h1">Dashboard</h1>
-<mat-grid-list cols="2" rowHeight="350px">
-  <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-    <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>
-          {{card.title}}
-          <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item>Expand</button>
-            <button mat-menu-item>Remove</button>
-          </mat-menu>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="dashboard-card-content">
-        <div>Card Content Here</div>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="40px">
+  <a class="quick-link" routerLink="/recipes/add">
+    <div class="illustration">
+      <img src="assets/icons/taco.svg" alt="">
+    </div>
+    <span>Ajouter une recette</span>
+  </a>
+
+  <a class="quick-link" routerLink="/blog/add">
+    <div class="illustration">
+      <img src="assets/icons/school-pencil.svg" alt="">
+    </div>
+    <span>Ajouter un article</span>
+  </a>
+
+  <a class="quick-link" routerLink="/comments">
+    <div class="illustration">
+      <img src="assets/icons/speech-bubble.svg" alt="">
+    </div>
+    <span>Voir les commentaires</span>
+  </a>
+
+  <a class="quick-link" routerLink="#">
+    <div class="illustration">
+      <img src="assets/icons/add-user.svg" alt="">
+    </div>
+    <span>Voir les utilisateurs</span>
+  </a>
+</div>
