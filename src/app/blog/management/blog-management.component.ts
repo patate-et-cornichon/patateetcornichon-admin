@@ -22,6 +22,8 @@ export class BlogManagementBaseComponent implements OnInit {
   hasError = false;
   editMode = false;
 
+  story: Story;
+
   // Author
   authorsList: User[] = [];
 
@@ -162,7 +164,7 @@ export class BlogManagementBaseComponent implements OnInit {
       } else {
         console.warn('Il faut une image seulement !.');
       }
-    }) ;
+    });
   }
 
   /**
@@ -266,6 +268,7 @@ export class BlogManagementCreateComponent extends BlogManagementBaseComponent i
   ) {
     super(blogService, messageService, router);
   }
+
   ngOnInit() {
     super.ngOnInit();
 
@@ -311,7 +314,6 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
   editMode = true;
 
   slug: string;
-  story: Story;
 
   constructor(
     protected blogService: BlogService,

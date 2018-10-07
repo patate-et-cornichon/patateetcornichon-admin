@@ -18,6 +18,8 @@ export class RecipesManagementBaseComponent implements OnInit {
   hasError = false;
   editMode = false;
 
+  recipe: Recipe;
+
   // Categories
   categoryList: Category[] = [];
 
@@ -403,7 +405,6 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
   editMode = true;
 
   slug: string;
-  recipe: Recipe;
 
   constructor(
     protected recipesService: RecipesService,
