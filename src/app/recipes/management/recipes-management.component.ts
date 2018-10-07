@@ -133,7 +133,7 @@ export class RecipesManagementBaseComponent implements OnInit {
       .getUnits()
       .subscribe(
         units => this.unitsList = units.map(
-          unit => unit.name.toLocaleLowerCase()
+          unit => unit.name,
         ),
       );
   }
@@ -316,7 +316,7 @@ export class RecipesManagementBaseComponent implements OnInit {
       this.filteredUnits = this.unitsList
         .filter(unit => {
           unit = unit.toLocaleLowerCase();
-          return unit.indexOf(filterValue.toLowerCase()) === 0;
+          return unit.indexOf(filterValue.toLocaleLowerCase()) === 0;
         });
     }
   }

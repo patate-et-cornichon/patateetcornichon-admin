@@ -207,8 +207,8 @@
                   [matAutocomplete]="autoUnit"
                 >
                 <mat-autocomplete #autoUnit="matAutocomplete">
-                  <mat-option *ngFor="let unit of filteredUnits" [value]="unit | capitalizeFirst">
-                    {{ unit | capitalizeFirst }}
+                  <mat-option *ngFor="let unit of filteredUnits" [value]="unit">
+                    {{ unit }}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
