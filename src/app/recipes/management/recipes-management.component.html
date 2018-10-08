@@ -140,7 +140,7 @@
     <!-- Third step -->
     <mat-step>
       <ng-template matStepLabel>Introduction</ng-template>
-      <div fxLayout="column">
+      <div fxLayout="column" class="editor-wrapper">
         <div id="editor"></div>
         <input type="hidden" id="introduction" formControlName="introduction">
       </div>
@@ -167,13 +167,14 @@
           >
             <div class="composition-controls">
               <button
+                type="button"
                 mat-button color="warn"
                 *ngIf="compositionIndex !== 0"
                 (click)="removeComposition(compositionIndex)"
               >
                 SUPPRIMER
               </button>
-              <button mat-button (click)="addComposition()">AJOUTER</button>
+              <button type="button" mat-button (click)="addComposition()">AJOUTER</button>
             </div>
             <mat-form-field>
               <input type="text" matInput placeholder="Nom de la composition" formControlName="name">
@@ -221,13 +222,14 @@
                 <div fxFlex="1 1 50px">
                   <div fxLayout="row" fxLayoutAlign="end end" class="action-buttons">
                     <button
+                      type="button"
                       mat-icon-button
                       *ngIf="ingredientIndex !== 0"
                       (click)="removeIngredient(compositionIndex, ingredientIndex)"
                     >
                       <mat-icon>close</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="addIngredient(compositionIndex)">
+                    <button mat-icon-button type="button" (click)="addIngredient(compositionIndex)">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
