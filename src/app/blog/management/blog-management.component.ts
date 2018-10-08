@@ -38,6 +38,9 @@ export class BlogManagementBaseComponent implements OnInit {
     authors: new FormControl(null, [
       Validators.required,
     ]),
+    created: new FormControl(new Date(), [
+      Validators.required,
+    ]),
     title: new FormControl(null, [
       Validators.required,
     ]),

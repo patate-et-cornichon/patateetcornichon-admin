@@ -9,6 +9,13 @@
       <div fxLayout="column">
         <mat-checkbox formControlName="published">Publié ?</mat-checkbox>
 
+        <!-- Created field-->
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Créé" formControlName="created" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
         <!-- Authors field-->
         <mat-form-field>
           <mat-select placeholder="Auteurs" formControlName="authors" multiple required>

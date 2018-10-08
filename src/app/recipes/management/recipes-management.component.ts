@@ -37,6 +37,9 @@ export class RecipesManagementBaseComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formGroup = new FormGroup({
     published: new FormControl(false),
+    created: new FormControl(new Date(), [
+      Validators.required,
+    ]),
     title: new FormControl(null, [
       Validators.required,
     ]),

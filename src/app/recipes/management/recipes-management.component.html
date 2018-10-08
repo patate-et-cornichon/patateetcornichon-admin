@@ -7,6 +7,14 @@
       <ng-template matStepLabel>Général</ng-template>
       <div fxLayout="column">
         <mat-checkbox formControlName="published">Publié ?</mat-checkbox>
+
+        <!-- Created field-->
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Créé" formControlName="created" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
         <!-- Full Title fields -->
         <div fxLayout="row" fxLayoutGap="40px">
           <mat-form-field fxFlex="1 1 auto">
