@@ -71,7 +71,7 @@ export class RecipesManagementBaseComponent implements OnInit {
     cooking_time: new FormControl(null),
     fridge_time: new FormControl(null),
     leavening_time: new FormControl(null),
-    difficulty: new FormControl(null, [
+    difficulty: new FormControl(1, [
       Validators.required,
     ]),
     introduction: new FormControl(null, [
