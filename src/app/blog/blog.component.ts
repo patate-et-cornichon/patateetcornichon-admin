@@ -17,6 +17,7 @@ import { BlogService } from './blog.service';
 })
 export class BlogComponent implements OnInit {
   displayedColumns: string[] = [
+    'main_picture',
     'full_title',
     'created',
     'comments_count',

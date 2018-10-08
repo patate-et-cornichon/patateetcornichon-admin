@@ -17,6 +17,7 @@ import { RecipesService } from './recipes.service';
 })
 export class RecipesComponent implements OnInit {
   displayedColumns: string[] = [
+    'main_picture',
     'full_title',
     'created',
     'categories',

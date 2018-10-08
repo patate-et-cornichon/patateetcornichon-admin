@@ -40,7 +40,16 @@ export interface Recipe {
   sub_title: string;
   full_title: string;
   main_picture: string;
+  main_picture_thumbs: {
+    mini: string;
+    medium: string;
+    large: string;
+  };
   secondary_picture?: string;
+  secondary_picture_thumbs?: {
+    medium: string;
+    large: string;
+  };
   goal: string;
   preparation_time: number;
   cooking_time?: number;

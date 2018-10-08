@@ -456,6 +456,10 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
     this.formGroup.get('categories').setValue(
       recipe.categories.map(category => category.id),
     );
+    this.formGroup.get('main_picture').setValue(recipe.main_picture_thumbs.medium);
+    if (recipe.secondary_picture_thumbs) {
+      this.formGroup.get('secondary_picture').setValue(recipe.secondary_picture_thumbs.medium);
+    }
     this.tags = recipe.tags.map(tag => tag.name);
   }
 
@@ -473,10 +477,10 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
       };
 
       // We don't want to send pictures if they are the default ones (URL pictures)
-      if (data['main_picture'] === this.recipe.main_picture) {
+      if (data['main_picture'] === this.recipe.main_picture_thumbs.medium) {
         delete data['main_picture'];
       }
-      if (data['secondary_picture'] === this.recipe.secondary_picture) {
+      if (this.recipe.secondary_picture_thumbs && (data['secondary_picture'] === this.recipe.secondary_picture_thumbs.medium)) {
         delete data['secondary_picture'];
       }
 

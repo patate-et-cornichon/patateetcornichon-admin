@@ -351,6 +351,7 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
     this.formGroup.get('authors').setValue(
       story.authors.map(author => author.id),
     );
+    this.formGroup.get('main_picture').setValue(story.main_picture_thumbs.medium);
     this.tags = story.tags.map(tag => tag.name);
   }
 
@@ -374,7 +375,7 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
       };
 
       // We don't want to send pictures if they are the default ones (URL pictures)
-      if (data['main_picture'] === this.story.main_picture) {
+      if (data['main_picture'] === this.story.main_picture_thumbs.medium) {
         delete data['main_picture'];
       }
 

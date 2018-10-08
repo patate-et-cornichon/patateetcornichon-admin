@@ -11,6 +11,16 @@
   <div class="list-table-container">
     <table mat-table [dataSource]="data" class="list-table">
 
+      <!-- Main Picture Column -->
+      <ng-container matColumnDef="main_picture">
+        <th mat-header-cell *matHeaderCellDef>Image</th>
+        <td mat-cell *matCellDef="let row">
+          <a [routerLink]="['/recipes', row.slug]">
+            <img [src]="row.main_picture_thumbs.mini" alt="" class="main-picture">
+          </a>
+        </td>
+      </ng-container>
+
       <!-- Title Column -->
       <ng-container matColumnDef="full_title">
         <th mat-header-cell *matHeaderCellDef>Titre</th>

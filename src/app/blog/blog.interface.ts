@@ -16,6 +16,11 @@ export interface Story {
   sub_title: string;
   full_title: string;
   main_picture: string;
+  main_picture_thumbs: {
+    mini: string;
+    medium: string;
+    large: string;
+  };
   content: string;
   tags: Tag[];
   authors: User[];
