@@ -3,9 +3,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import Quill from 'quill';
 import { Observable } from 'rxjs';
 import slugify from 'slugify';
 
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { map, startWith } from 'rxjs/operators';
 import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
 import { MessageService } from '../../core/message/message.service';
@@ -86,6 +88,8 @@ export class RecipesManagementBaseComponent implements OnInit {
     ]),
   });
 
+  editor: Quill;
+
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -139,6 +143,32 @@ export class RecipesManagementBaseComponent implements OnInit {
           unit => unit.name,
         ),
       );
+  }
+
+  selectionChange(event: StepperSelectionEvent): void {
+    if (event.selectedIndex === 2 && !this.editor) {
+      this.initEditor();
+    }
+  }
+
+  initEditor(): void {
+    const toolbarOptions = [
+      ['bold', 'italic', 'underline', 'strike'],
+
+      ['link'],
+
+      ['clean'],
+    ];
+    this.editor = new Quill('#editor', {
+      modules: {
+        toolbar: toolbarOptions,
+      },
+      theme: 'snow',
+    });
+    this.editor.on('text-change', () => {
+      const content = this.editor.root.innerHTML;
+      this.formGroup.controls['introduction'].setValue(content);
+    });
   }
 
   /**
@@ -464,6 +494,15 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
       this.formGroup.get('secondary_picture').setValue(recipe.secondary_picture_thumbs.medium);
     }
     this.tags = recipe.tags.map(tag => tag.name);
+  }
+
+  /**
+   * Override default editor to populate it with recipe content
+   */
+  initEditor(): void {
+    super.initEditor();
+
+    this.editor.root.innerHTML = this.formGroup.get('introduction').value;
   }
 
   /**

@@ -1,7 +1,7 @@
 <h1 class="mat-h1">{{ pageTitle }}</h1>
 
 <form [formGroup]="formGroup" (submit)="saveRecipe()" *ngIf="!editMode || recipe">
-  <mat-vertical-stepper #stepper>
+  <mat-vertical-stepper #stepper (selectionChange)="selectionChange($event)">
     <!-- First step -->
     <mat-step>
       <ng-template matStepLabel>Général</ng-template>
@@ -139,19 +139,10 @@
 
     <!-- Third step -->
     <mat-step>
-      <ng-template matStepLabel>Contenu</ng-template>
+      <ng-template matStepLabel>Introduction</ng-template>
       <div fxLayout="column">
-        <mat-form-field>
-          <textarea
-            matInput
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"
-            placeholder="Introduction"
-            formControlName="introduction"
-            required
-          >
-          </textarea>
-        </mat-form-field>
+        <div id="editor"></div>
+        <input type="hidden" id="introduction" formControlName="introduction">
       </div>
       <div>
         <div fxLayout="row" fxLayoutGap="20px">
