@@ -75,7 +75,7 @@ export class AuthService {
           response => {
             this.setToken(response.token);
             this.setUser(response.user);
-          }
+          },
         ),
       );
   }

@@ -7,7 +7,7 @@ import {
   Input,
   OnInit,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { LayoutWrapperService } from './layout-wrapper.service';
 
@@ -15,7 +15,7 @@ import { LayoutWrapperService } from './layout-wrapper.service';
 @Component({
   selector: 'app-layout-wrapper',
   templateUrl: './layout-wrapper.component.html',
-  styleUrls: ['./layout-wrapper.component.scss']
+  styleUrls: ['./layout-wrapper.component.scss'],
 })
 export class LayoutWrapperComponent implements AfterViewInit {
   isLoading: boolean;
@@ -33,13 +33,13 @@ export class LayoutWrapperComponent implements AfterViewInit {
       isLoading => {
         this.isLoading = isLoading;
         this.cdr.detectChanges();
-      }
+      },
     );
   }
 }
 
 @Directive({
-  selector: '[appLayoutWrapper]'
+  selector: '[appLayoutWrapper]',
 })
 export class LayoutWrapperDirective implements OnInit {
 
@@ -48,7 +48,7 @@ export class LayoutWrapperDirective implements OnInit {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
   ) { }
 
   ngOnInit() {

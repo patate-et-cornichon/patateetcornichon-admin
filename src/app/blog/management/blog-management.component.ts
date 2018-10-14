@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import slugify from 'slugify';
 
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { map, startWith } from 'rxjs/operators';
+import { finalize, map, startWith } from 'rxjs/operators';
 import { User } from '../../core/auth/auth.interface';
 import { AuthService } from '../../core/auth/auth.service';
 import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
@@ -143,8 +143,6 @@ export class BlogManagementBaseComponent implements OnInit {
   /**
    * Select local image and send it to the server.
    * Update the editor with the new image.
-   *
-   * @private
    */
   _selectLocalImage(): void {
     const input = document.createElement('input');
@@ -223,7 +221,12 @@ export class BlogManagementBaseComponent implements OnInit {
     let fullTitleValue = this.formGroup.controls['full_title'].value;
     if (fullTitleValue) {
       fullTitleValue = fullTitleValue.toLowerCase();
-      const slugifiedTitle = slugify(fullTitleValue);
+      const slugifiedTitle = slugify(
+        fullTitleValue,
+        {
+          remove: /[*,+~.()'"!:@]/g,
+        },
+      );
       this.formGroup.controls['slug'].setValue(slugifiedTitle);
     }
   }
@@ -232,7 +235,6 @@ export class BlogManagementBaseComponent implements OnInit {
    * Filter tags according to a tag value
    *
    * @param value
-   * @private
    */
   private _filterTag(value: string): string[] {
     const filterValue = value;
@@ -257,7 +259,7 @@ export class BlogManagementBaseComponent implements OnInit {
 @Component({
   selector: 'app-blog-management-create',
   templateUrl: './blog-management.component.html',
-  styleUrls: ['./blog-management.component.scss']
+  styleUrls: ['./blog-management.component.scss'],
 })
 export class BlogManagementCreateComponent extends BlogManagementBaseComponent implements OnInit {
 
@@ -293,13 +295,12 @@ export class BlogManagementCreateComponent extends BlogManagementBaseComponent i
         tags: this.tags,
       };
       this.blogService.postStory(data)
+        .pipe(finalize(() => this.isPosting = false))
         .subscribe(
           () => {
             this.messageService.showMessage('Article enregistré !');
             return this.router.navigate(['/blog']);
           },
-          null,
-          () => this.isPosting = false,
         );
     }
   }
@@ -309,7 +310,7 @@ export class BlogManagementCreateComponent extends BlogManagementBaseComponent i
 @Component({
   selector: 'app-blog-management-edit',
   templateUrl: './blog-management.component.html',
-  styleUrls: ['./blog-management.component.scss']
+  styleUrls: ['./blog-management.component.scss'],
 })
 export class BlogManagementEditComponent extends BlogManagementBaseComponent implements OnInit {
 
@@ -345,7 +346,6 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
    * Populate story fields with fetched data
    *
    * @param story
-   * @private
    */
   _populateData(story: Story): void {
     // Populate with values
@@ -383,13 +383,12 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
       }
 
       this.blogService.patchStory(this.story.slug, data)
+        .pipe(finalize(() => this.isPosting = false))
         .subscribe(
           (response) => {
             this.messageService.showMessage('Article mis à jour !');
             this.slug = response.slug;
           },
-          null,
-          () => this.isPosting = false,
         );
     }
   }

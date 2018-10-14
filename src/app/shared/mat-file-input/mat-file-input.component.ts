@@ -11,7 +11,7 @@ import {
   Optional,
   Renderer2,
   Self,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
 import { mixinErrorState, CanUpdateErrorState, ErrorStateMatcher, MatFormFieldControl } from '@angular/material';
@@ -36,8 +36,8 @@ export const _MatInputMixinBase = mixinErrorState(MatFileInputBase);
   providers: [
     {
       provide: MatFormFieldControl,
-      useExisting: MatFileInputComponent
-    }
+      useExisting: MatFileInputComponent,
+    },
   ],
 })
 export class MatFileInputComponent

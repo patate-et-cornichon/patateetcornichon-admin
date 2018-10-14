@@ -73,8 +73,8 @@ import { RecipesService } from './recipes.service';
     RecipesManagementEditComponent,
   ],
   providers: [
-    RecipesService
-  ]
+    RecipesService,
+  ],
 })
 export class RecipesModule {
 }

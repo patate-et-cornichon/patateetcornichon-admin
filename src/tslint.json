@@ -1,25 +1,29 @@
 {
-    "extends": "../tslint.json",
-    "rules": {
-        "directive-selector": [
-            true,
-            "attribute",
-            "app",
-            "camelCase"
-        ],
-        "component-selector": [
-            true,
-            "element",
-            "app",
-            "kebab-case"
-        ],
-        "ordered-imports": [
-          true,
-          {
-            "import-sources-order": "lowercase-first",
-            "named-imports-order": "lowercase-first"
-          }
-        ],
-        "no-unused-variable": true
-    }
+  "extends": "../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "app",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "app",
+      "kebab-case"
+    ],
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "lowercase-first",
+        "named-imports-order": "lowercase-first"
+      }
+    ],
+    "import-spacing": true,
+    "only-arrow-functions": true,
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+    "no-redundant-jsdoc": true,
+    "no-unused-variable": true
+  }
 }

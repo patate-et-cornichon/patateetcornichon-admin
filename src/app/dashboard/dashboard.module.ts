@@ -16,7 +16,7 @@ import { DashboardRoutingModule } from './dashboard.routing';
     FlexLayoutModule,
   ],
   declarations: [
-    DashboardComponent
+    DashboardComponent,
   ],
 })
 export class DashboardModule {

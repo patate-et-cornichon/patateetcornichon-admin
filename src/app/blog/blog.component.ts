@@ -64,7 +64,7 @@ export class BlogComponent implements OnInit {
         catchError(() => {
           this.layoutWrapperServer.setLoadingState(false);
           return observableOf([]);
-        })
+        }),
       )
       .subscribe(data => this.data = data);
   }
@@ -81,7 +81,7 @@ export class BlogComponent implements OnInit {
     };
     this.blogService.patchStory(storySlug, data)
       .subscribe(
-        () => this.messageService.showMessage('Article mis à jour !')
+        () => this.messageService.showMessage('Article mis à jour !'),
       );
   }
 
@@ -96,7 +96,7 @@ export class BlogComponent implements OnInit {
       data: {
         title: 'Supprimer ?',
         content: `Confirmes-tu la supression de l'article <strong>${story.full_title}</strong> ?`,
-      }
+      },
     });
 
     // Update list after recipe is deleted
@@ -110,10 +110,10 @@ export class BlogComponent implements OnInit {
                 () => {
                   this.messageService.showMessage('Article supprimé !');
                   this.data = this.data.filter(e => e.slug !== story.slug);
-                }
+                },
               );
           }
-        }
+        },
       );
   }
 }

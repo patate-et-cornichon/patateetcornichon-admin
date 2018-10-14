@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 import { AuthService } from '../core/auth/auth.service';
 import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
@@ -9,7 +10,7 @@ import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm = new FormGroup({
@@ -38,10 +39,10 @@ export class LoginComponent {
     this.layoutWrapperService.setLoadingState(true);
     this.authService
       .login(this.loginForm.value)
+      .pipe(finalize(() => this.layoutWrapperService.setLoadingState(false)))
       .subscribe(
         () => this.router.navigate(['/']),
         () => this.isSubmitted = false,
-        () => this.layoutWrapperService.setLoadingState(false),
       );
   }
 }

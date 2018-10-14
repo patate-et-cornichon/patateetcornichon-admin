@@ -65,7 +65,7 @@ export class RecipesComponent implements OnInit {
         catchError(() => {
           this.layoutWrapperService.setLoadingState(false);
           return observableOf([]);
-        })
+        }),
       )
       .subscribe(data => this.data = data);
   }
@@ -82,7 +82,7 @@ export class RecipesComponent implements OnInit {
     };
     this.recipesService.patchRecipe(recipeSlug, data)
       .subscribe(
-        () => this.messageService.showMessage('Recette mise à jour !')
+        () => this.messageService.showMessage('Recette mise à jour !'),
       );
   }
 
@@ -97,7 +97,7 @@ export class RecipesComponent implements OnInit {
       data: {
         title: 'Supprimer ?',
         content: `Confirmes-tu la supression de la recette <strong>${recipe.full_title}</strong> ?`,
-      }
+      },
     });
 
     // Update list after recipe is deleted
@@ -111,10 +111,10 @@ export class RecipesComponent implements OnInit {
                 () => {
                   this.messageService.showMessage('Recette supprimée !');
                   this.data = this.data.filter(e => e.slug !== recipe.slug);
-                }
+                },
               );
           }
-        }
+        },
       );
   }
 }

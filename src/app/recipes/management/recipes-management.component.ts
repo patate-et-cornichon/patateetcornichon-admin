@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import slugify from 'slugify';
 
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { map, startWith } from 'rxjs/operators';
+import { finalize, map, startWith } from 'rxjs/operators';
 import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
 import { MessageService } from '../../core/message/message.service';
 import { Category, Recipe } from '../recipes.interface';
@@ -240,7 +240,12 @@ export class RecipesManagementBaseComponent implements OnInit {
     let fullTitleValue = this.formGroup.controls['full_title'].value;
     if (fullTitleValue) {
       fullTitleValue = fullTitleValue.toLowerCase();
-      const slugifiedTitle = slugify(fullTitleValue);
+      const slugifiedTitle = slugify(
+        fullTitleValue,
+        {
+          remove: /[*,+~.()'"!:@]/g,
+        },
+      );
       this.formGroup.controls['slug'].setValue(slugifiedTitle);
     }
   }
@@ -282,9 +287,9 @@ export class RecipesManagementBaseComponent implements OnInit {
     });
     const ingredients = composition.get('ingredients') as FormArray;
     Array.from({
-        length: ingredientsLength
+        length: ingredientsLength,
       },
-      () => ingredients.push(this.createIngredient())
+      () => ingredients.push(this.createIngredient()),
     );
     return composition;
   }
@@ -358,7 +363,6 @@ export class RecipesManagementBaseComponent implements OnInit {
    * Filter tags according to a tag value
    *
    * @param value
-   * @private
    */
   private _filterTag(value: string): string[] {
     const filterValue = value;
@@ -383,7 +387,7 @@ export class RecipesManagementBaseComponent implements OnInit {
 @Component({
   selector: 'app-recipes-management-create',
   templateUrl: './recipes-management.component.html',
-  styleUrls: ['./recipes-management.component.scss']
+  styleUrls: ['./recipes-management.component.scss'],
 })
 export class RecipesManagementCreateComponent extends RecipesManagementBaseComponent implements OnInit {
 
@@ -414,13 +418,12 @@ export class RecipesManagementCreateComponent extends RecipesManagementBaseCompo
         tags: this.tags,
       };
       this.recipesService.postRecipe(data)
+        .pipe(finalize(() => this.isPosting = false))
         .subscribe(
           () => {
             this.messageService.showMessage('Recette enregistrée !');
             return this.router.navigate(['/recipes']);
           },
-          null,
-          () => this.isPosting = false,
         );
     }
   }
@@ -430,7 +433,7 @@ export class RecipesManagementCreateComponent extends RecipesManagementBaseCompo
 @Component({
   selector: 'app-recipes-management-edit',
   templateUrl: './recipes-management.component.html',
-  styleUrls: ['./recipes-management.component.scss']
+  styleUrls: ['./recipes-management.component.scss'],
 })
 export class RecipesManagementEditComponent extends RecipesManagementBaseComponent implements OnInit {
 
@@ -466,7 +469,6 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
    * Populate recipe fields with fetched data
    *
    * @param recipe
-   * @private
    */
   _populateData(recipe: Recipe): void {
     // Add composition structure
@@ -478,7 +480,7 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
     // Add steps structure
     Array.from(
       {
-        length: recipe.steps.length
+        length: recipe.steps.length,
       },
       () => this.steps.push(this.createStep()),
     );
@@ -527,13 +529,12 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
       }
 
       this.recipesService.patchRecipe(this.recipe.slug, data)
+        .pipe(finalize(() => this.isPosting = false))
         .subscribe(
           (response) => {
             this.messageService.showMessage('Recette mise à jour !');
             this.slug = response.slug;
           },
-          null,
-          () => this.isPosting = false,
         );
     }
   }

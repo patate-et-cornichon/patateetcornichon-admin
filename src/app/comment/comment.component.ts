@@ -56,7 +56,7 @@ export class CommentDialogComponent {
         () => {
           this.messageService.showMessage('Réponse enregistrée !');
           this.dialogRef.close('success');
-        }
+        },
       );
     }
   }
@@ -130,7 +130,7 @@ export class CommentComponent implements OnInit {
         catchError(() => {
           this.layoutWrapperService.setLoadingState(false);
           return observableOf([]);
-        })
+        }),
       )
       .subscribe(data => this.data = data);
   }
@@ -147,7 +147,7 @@ export class CommentComponent implements OnInit {
     };
     this.commentService.patchComment(commentId, data)
       .subscribe(
-        () => this.messageService.showMessage('Commentaire mis à jour !')
+        () => this.messageService.showMessage('Commentaire mis à jour !'),
       );
   }
 
@@ -166,7 +166,7 @@ export class CommentComponent implements OnInit {
         if (result === 'success') {
           this._refreshData();
         }
-      }
+      },
     );
   }
 
@@ -181,7 +181,7 @@ export class CommentComponent implements OnInit {
       data: {
         title: 'Supprimer ?',
         content: 'Confirmes-tu la supression de ce commentaire ?',
-      }
+      },
     });
 
     // Update list after comment is deleted
@@ -195,17 +195,15 @@ export class CommentComponent implements OnInit {
                 () => {
                   this.messageService.showMessage('Commentaire supprimé !');
                   this._refreshData();
-                }
+                },
               );
           }
-        }
+        },
       );
   }
 
   /**
    * Refresh data, fetching from server
-   *
-   * @private
    */
   _refreshData(): void {
     this.layoutWrapperService.setLoadingState(true);
@@ -216,7 +214,7 @@ export class CommentComponent implements OnInit {
           this.pageSize = data.page_size;
           this.data = data.results;
           this.layoutWrapperService.setLoadingState(false);
-        }
+        },
       );
   }
 }

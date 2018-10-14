@@ -9,31 +9,31 @@ const routes: Routes = [
     path: '',
     component: PrivateLayoutComponent,
     canActivate: [
-      AuthGuard
+      AuthGuard,
     ],
     children: [
       {
         path: '',
-        loadChildren: '../dashboard/dashboard.module#DashboardModule'
+        loadChildren: '../dashboard/dashboard.module#DashboardModule',
       },
       {
         path: 'recipes',
-        loadChildren: '../recipes/recipes.module#RecipesModule'
+        loadChildren: '../recipes/recipes.module#RecipesModule',
       },
       {
         path: 'blog',
-        loadChildren: '../blog/blog.module#BlogModule'
+        loadChildren: '../blog/blog.module#BlogModule',
       },
       {
         path: 'comments',
-        loadChildren: '../comment/comment.module#CommentModule'
+        loadChildren: '../comment/comment.module#CommentModule',
       },
     ],
   },
   {
     path: 'login',
-    loadChildren: '../login/login.module#LoginModule'
-  }
+    loadChildren: '../login/login.module#LoginModule',
+  },
 ];
 
 @NgModule({

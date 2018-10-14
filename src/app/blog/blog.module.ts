@@ -71,7 +71,7 @@ import { BlogManagementCreateComponent, BlogManagementEditComponent } from './ma
   ],
   providers: [
     BlogService,
-  ]
+  ],
 })
 export class BlogModule {
 }
