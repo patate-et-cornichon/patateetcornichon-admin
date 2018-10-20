@@ -194,8 +194,8 @@ export class MatFileInputComponent
       this.preview.nativeElement.style.backgroundImage = `url(${this.imageContent})`;
 
       // Change the component input value
-      this.value = this._reader.result;
-      this._onChange(this._reader.result);
+      this.value = String(this._reader.result);
+      this._onChange(this.value);
     }, false);
   }
 
