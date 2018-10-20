@@ -9,7 +9,7 @@ export interface Tag {
 export interface Story {
   id: string;
   slug: string;
-  created: string;
+  created: number;
   updated: string;
   published: boolean;
   title: string;

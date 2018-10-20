@@ -33,7 +33,7 @@ export interface RecipeComposition {
 export interface Recipe {
   id: string;
   slug: string;
-  created: string;
+  created: number;
   updated: string;
   published: boolean;
   title: string;

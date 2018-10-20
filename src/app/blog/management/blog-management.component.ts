@@ -349,8 +349,9 @@ export class BlogManagementEditComponent extends BlogManagementBaseComponent imp
    */
   _populateData(story: Story): void {
     // Populate with values
-    this.formGroup.patchValue(story);
+    this.formGroup.patchValue({...story});
     // Update complex fields
+    this.formGroup.get('created').setValue(new Date(story.created * 1000));
     this.formGroup.get('authors').setValue(
       story.authors.map(author => author.id),
     );

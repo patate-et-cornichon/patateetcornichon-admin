@@ -486,8 +486,9 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
     );
 
     // Populate with values
-    this.formGroup.patchValue(recipe);
+    this.formGroup.patchValue({...recipe});
     // Update complex fields
+    this.formGroup.get('created').setValue(new Date(recipe.created * 1000));
     this.formGroup.get('categories').setValue(
       recipe.categories.map(category => category.id),
     );

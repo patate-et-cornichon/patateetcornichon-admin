@@ -34,7 +34,7 @@
         <th mat-header-cell *matHeaderCellDef disableClear>
           Créée
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.created | date }}</td>
+        <td mat-cell *matCellDef="let row">{{ row.created * 1000 | date }}</td>
       </ng-container>
 
       <!-- Categories Column -->
