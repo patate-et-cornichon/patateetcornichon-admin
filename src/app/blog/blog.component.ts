@@ -25,7 +25,7 @@ export class BlogComponent implements OnInit {
     'actions',
   ];
   resultsLength = 0;
-  pageSize = 0;
+  pageSize = 20;
   data: Story[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,7 +57,6 @@ export class BlogComponent implements OnInit {
           // Flip flag to show that loading has finished.
           this.layoutWrapperServer.setLoadingState(false);
           this.resultsLength = data.count;
-          this.pageSize = data.page_size;
 
           return data.results;
         }),

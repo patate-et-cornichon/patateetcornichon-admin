@@ -26,7 +26,7 @@ export class RecipesComponent implements OnInit {
     'actions',
   ];
   resultsLength = 0;
-  pageSize = 0;
+  pageSize = 20;
   data: Recipe[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,7 +58,6 @@ export class RecipesComponent implements OnInit {
           // Flip flag to show that loading has finished.
           this.layoutWrapperService.setLoadingState(false);
           this.resultsLength = data.count;
-          this.pageSize = data.page_size;
 
           return data.results;
         }),
