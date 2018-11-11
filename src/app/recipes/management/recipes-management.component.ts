@@ -471,6 +471,9 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
    * @param recipe
    */
   _populateData(recipe: Recipe): void {
+    if (recipe.composition.length === 0) {  // To be deleted
+      this.addComposition();
+    }
     // Add composition structure
     for (const composition of recipe.composition) {
       this.composition.push(
