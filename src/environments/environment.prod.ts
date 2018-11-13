@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://prod-api.patateetcornichon.com',
+  baseUrl: 'https://api.patateetcornichon.com',
 };
