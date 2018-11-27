@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { AuthService } from '../core/auth/auth.service';
-import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
+import { AuthService } from '../../core/auth/auth.service';
+import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
 
 
 @Component({

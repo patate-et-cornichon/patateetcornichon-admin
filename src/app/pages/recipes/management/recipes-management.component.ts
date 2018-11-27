@@ -9,8 +9,8 @@ import slugify from 'slugify';
 
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { finalize, map, startWith } from 'rxjs/operators';
-import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
-import { MessageService } from '../../core/message/message.service';
+import { LayoutWrapperService } from '../../../core/layout/layout-wrapper.service';
+import { MessageService } from '../../../core/message/message.service';
 import { Category, Recipe } from '../recipes.interface';
 import { RecipesService } from '../recipes.service';
 

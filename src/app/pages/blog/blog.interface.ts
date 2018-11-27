@@ -1,4 +1,4 @@
-import { User } from '../core/auth/auth.interface';
+import { User } from '../../core/auth/auth.interface';
 
 
 export interface Tag {

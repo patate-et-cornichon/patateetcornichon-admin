@@ -14,25 +14,25 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: '../dashboard/dashboard.module#DashboardModule',
+        loadChildren: '../pages/dashboard/dashboard.module#DashboardModule',
       },
       {
         path: 'recipes',
-        loadChildren: '../recipes/recipes.module#RecipesModule',
+        loadChildren: '../pages/recipes/recipes.module#RecipesModule',
       },
       {
         path: 'blog',
-        loadChildren: '../blog/blog.module#BlogModule',
+        loadChildren: '../pages/blog/blog.module#BlogModule',
       },
       {
         path: 'comments',
-        loadChildren: '../comment/comment.module#CommentModule',
+        loadChildren: '../pages/comment/comment.module#CommentModule',
       },
     ],
   },
   {
     path: 'login',
-    loadChildren: '../login/login.module#LoginModule',
+    loadChildren: '../pages/login/login.module#LoginModule',
   },
 ];
 

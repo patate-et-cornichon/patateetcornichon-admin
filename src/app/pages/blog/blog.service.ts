@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../environments/environment';
-import { User } from '../core/auth/auth.interface';
+import { environment } from '../../../environments/environment';
+import { User } from '../../core/auth/auth.interface';
 import { PaginatedStories, Story, Tag } from './blog.interface';
 import { BlogModule } from './blog.module';
 

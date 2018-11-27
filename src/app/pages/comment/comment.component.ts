@@ -4,9 +4,9 @@ import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
-import { MessageService } from '../core/message/message.service';
-import { ConfirmationDialogComponent } from '../shared/components/dialogs/confirmation-dialog.component';
+import { LayoutWrapperService } from '../../core/layout/layout-wrapper.service';
+import { MessageService } from '../../core/message/message.service';
+import { ConfirmationDialogComponent } from '../../shared/components/dialogs/confirmation-dialog.component';
 import { Comment, PaginatedComments } from './comment.interface';
 import { CommentService } from './comment.service';
 
