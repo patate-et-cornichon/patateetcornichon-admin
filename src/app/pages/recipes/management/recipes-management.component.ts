@@ -525,10 +525,10 @@ export class RecipesManagementEditComponent extends RecipesManagementBaseCompone
       };
 
       // We don't want to send pictures if they are the default ones (URL pictures)
-      if (data['main_picture'] === this.recipe.main_picture_thumbs.medium) {
+      if (data['main_picture'] === this.recipe.main_picture_thumbs.large) {
         delete data['main_picture'];
       }
-      if (this.recipe.secondary_picture_thumbs && (data['secondary_picture'] === this.recipe.secondary_picture_thumbs.medium)) {
+      if (this.recipe.secondary_picture_thumbs && (data['secondary_picture'] === this.recipe.secondary_picture_thumbs.large)) {
         delete data['secondary_picture'];
       }
 
