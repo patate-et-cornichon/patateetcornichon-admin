@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatExpansionModule,
   MatGridListModule,
   MatIconModule,
   MatListModule,
@@ -35,6 +35,7 @@ import { NavComponent } from './nav/nav.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatExpansionModule,
     MatGridListModule,
     MatCardModule,
     MatMenuModule,

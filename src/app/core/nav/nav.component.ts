@@ -14,11 +14,56 @@ import { AuthService } from '../auth/auth.service';
 })
 export class NavComponent implements OnInit {
   user: User;
-
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
     );
+  navigation = [
+    {
+      header: {
+        title: 'Recettes',
+        icon: 'fastfood',
+      },
+      links: [
+        {
+          title: 'Liste',
+          link: '/recipes',
+        },
+        {
+          title: 'Ajouter',
+          link: '/recipes/add',
+        },
+      ],
+    },
+    {
+      header: {
+        title: 'Blog',
+        icon: 'local_library',
+      },
+      links: [
+        {
+          title: 'Liste',
+          link: '/blog',
+        },
+        {
+          title: 'Ajouter',
+          link: '/blog/add',
+        },
+      ],
+    },
+    {
+      header: {
+        title: 'Commentaires',
+        icon: 'mode_comment',
+      },
+      links: [
+        {
+          title: 'Liste',
+          link: '/comments',
+        },
+      ],
+    },
+  ];
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -30,6 +75,9 @@ export class NavComponent implements OnInit {
     this.user = this.authService.getUser();
   }
 
+  /**
+   * Logout the curent user
+   */
   logout() {
     this.authService.logout();
   }

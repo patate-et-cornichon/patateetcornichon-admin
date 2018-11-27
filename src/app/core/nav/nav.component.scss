@@ -9,13 +9,18 @@
   .sidenav {
     width: 220px;
 
-    .nav-title {
-      text-transform: uppercase;
-      font-size: 1em;
+    .nav-logo {
+      a {
+        height: 70%;
+
+        img {
+          max-height: 100%;
+        }
+      }
     }
 
     .mat-list-icon {
-      margin-right: 10px;
+      margin-right: 0.8em;
     }
 
     .user-box {
