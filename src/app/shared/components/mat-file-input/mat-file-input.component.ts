@@ -20,14 +20,18 @@ import { Subject } from 'rxjs';
 
 /* Boilerplate for applying mixins to MatFileInput. */
 export class MatFileInputBase {
-  constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
-              public _parentForm: NgForm,
-              public _parentFormGroup: FormGroupDirective,
-              public ngControl: NgControl) {
+  constructor(
+    public _defaultErrorStateMatcher: ErrorStateMatcher,
+    public _parentForm: NgForm,
+    public _parentFormGroup: FormGroupDirective,
+    public ngControl: NgControl,
+    ) {
   }
 }
 
+
 export const _MatInputMixinBase = mixinErrorState(MatFileInputBase);
+
 
 @Component({
   selector: 'app-mat-file-input',
@@ -48,10 +52,7 @@ export class MatFileInputComponent
   stateChanges = new Subject<void>();
   focused = false;
   controlType = 'mat-file-input';
-
-  private _placeholder: string;
-  private _required = false;
-  private _reader = new FileReader();
+  imageContent = null;
 
   @Input() autofilled = false;
   @Input() valuePlaceholder: string;
@@ -63,7 +64,30 @@ export class MatFileInputComponent
   @ViewChild('input') private input: ElementRef;
   @ViewChild('preview') private preview: ElementRef;
 
-  imageContent = null;
+  private _placeholder: string;
+  private _required = false;
+  private _reader = new FileReader();
+
+  constructor(
+    @Optional() @Self() public ngControl: NgControl,
+    @Optional() _parentForm: NgForm,
+    @Optional() _parentFormGroup: FormGroupDirective,
+    _defaultErrorStateMatcher: ErrorStateMatcher,
+    private fm: FocusMonitor,
+    private _elementRef: ElementRef,
+    private _renderer: Renderer2,
+  ) {
+    super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
+    fm.monitor(_elementRef.nativeElement, true)
+      .subscribe(origin => {
+        this.focused = !!origin;
+        this.stateChanges.next();
+      });
+    this.initReaderEventHandler();
+  }
 
   setDescribedByIds(ids: string[]) {
     this.describedBy = ids.join(' ');
@@ -125,35 +149,6 @@ export class MatFileInputComponent
     this.stateChanges.next();
   }
 
-  onContainerClick(event: MouseEvent) {
-    if ((event.target as Element).tagName.toLowerCase() !== 'input' && !this.disabled) {
-      this._elementRef.nativeElement.querySelector('input').focus();
-      this.focused = true;
-      this.open();
-    }
-  }
-
-  constructor(
-    @Optional() @Self() public ngControl: NgControl,
-    @Optional() _parentForm: NgForm,
-    @Optional() _parentFormGroup: FormGroupDirective,
-    _defaultErrorStateMatcher: ErrorStateMatcher,
-    private fm: FocusMonitor,
-    private _elementRef: ElementRef,
-    private _renderer: Renderer2,
-  ) {
-    super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
-    if (this.ngControl != null) {
-      this.ngControl.valueAccessor = this;
-    }
-    fm.monitor(_elementRef.nativeElement, true)
-      .subscribe(origin => {
-        this.focused = !!origin;
-        this.stateChanges.next();
-      });
-    this._initReaderEventHandler();
-  }
-
   ngOnInit() {
     if (!this.empty) {
       this.imageContent = this.value;
@@ -161,10 +156,12 @@ export class MatFileInputComponent
     }
   }
 
-  private _onChange(_: any) {
-  }
-
-  private _onTouched() {
+  onContainerClick(event: MouseEvent) {
+    if ((event.target as Element).tagName.toLowerCase() !== 'input' && !this.disabled) {
+      this._elementRef.nativeElement.querySelector('input').focus();
+      this.focused = true;
+      this.open();
+    }
   }
 
   writeValue(obj: any): void {
@@ -181,22 +178,10 @@ export class MatFileInputComponent
 
   @HostListener('change', ['$event'])
   change(event: any) {
-    const file = (<HTMLInputElement>event.target).files[0];
+    const file = (<HTMLInputElement> event.target).files[0];
     if (file) {
       this._reader.readAsDataURL(file);
     }
-  }
-
-  _initReaderEventHandler() {
-    this._reader.addEventListener('load', () => {
-      // Get the result and set the preview image
-      this.imageContent = this._reader.result;
-      this.preview.nativeElement.style.backgroundImage = `url(${this.imageContent})`;
-
-      // Change the component input value
-      this.value = String(this._reader.result);
-      this._onChange(this.value);
-    }, false);
   }
 
   @HostListener('focusout')
@@ -240,5 +225,23 @@ export class MatFileInputComponent
 
   ngDoCheck() {
     this.updateErrorState();
+  }
+
+  private initReaderEventHandler() {
+    this._reader.addEventListener('load', () => {
+      // Get the result and set the preview image
+      this.imageContent = this._reader.result;
+      this.preview.nativeElement.style.backgroundImage = `url(${this.imageContent})`;
+
+      // Change the component input value
+      this.value = String(this._reader.result);
+      this._onChange(this.value);
+    }, false);
+  }
+
+  private _onChange(_: any) {
+  }
+
+  private _onTouched() {
   }
 }

@@ -22,8 +22,43 @@
     ],
     "import-spacing": true,
     "only-arrow-functions": true,
-    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
     "no-redundant-jsdoc": true,
-    "no-unused-variable": true
+    "no-unused-variable": true,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock"
+    ],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "public-instance-field",
+          "private-static-field",
+          "private-instance-field",
+          "public-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ]
   }
 }

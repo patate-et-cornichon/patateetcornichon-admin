@@ -359,6 +359,14 @@ export class RecipesManagementBaseComponent implements OnInit {
     }
   }
 
+  saveRecipe() {
+    if (this.formGroup.invalid) {
+      this.hasError = true;
+      return;
+    }
+    this.hasError = false;
+  }
+
   /**
    * Filter tags according to a tag value
    *
@@ -372,14 +380,6 @@ export class RecipesManagementBaseComponent implements OnInit {
         tag = tag.toLocaleLowerCase();
         return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
       });
-  }
-
-  saveRecipe() {
-    if (this.formGroup.invalid) {
-      this.hasError = true;
-      return;
-    }
-    this.hasError = false;
   }
 }
 

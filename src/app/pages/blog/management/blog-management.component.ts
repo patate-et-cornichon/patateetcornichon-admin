@@ -214,6 +214,14 @@ export class BlogManagementBaseComponent implements OnInit {
     this.formGroup.controls['tags'].setValue(null);
   }
 
+  saveStory() {
+    if (this.formGroup.invalid || !this.tags.length) {
+      this.hasError = true;
+      return;
+    }
+    this.hasError = false;
+  }
+
   /**
    * Change the slug field value according to the full title field
    */
@@ -244,14 +252,6 @@ export class BlogManagementBaseComponent implements OnInit {
         tag = tag.toLocaleLowerCase();
         return tag.indexOf(filterValue) === 0 && !this.tags.includes(tag);
       });
-  }
-
-  saveStory() {
-    if (this.formGroup.invalid || !this.tags.length) {
-      this.hasError = true;
-      return;
-    }
-    this.hasError = false;
   }
 }
 
