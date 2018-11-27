@@ -17,7 +17,7 @@ import {
   MatTableModule,
 } from '@angular/material';
 
-import { DialogsModule } from '../shared/dialogs/dialogs.module';
+import { DialogsModule } from '../shared/components/dialogs/dialogs.module';
 import { CommentComponent, CommentDialogComponent } from './comment.component';
 import { CommentRoutingModule } from './comment.routing';
 import { CommentService } from './comment.service';

@@ -24,9 +24,9 @@ import {
   MatTableModule,
 } from '@angular/material';
 
-import { CapitalizeFirstModule } from '../pipes/capitalize-first/capitalize-first.module';
-import { DialogsModule } from '../shared/dialogs/dialogs.module';
-import { MatFileInputModule } from '../shared/mat-file-input/mat-file-input.module';
+import { CapitalizeFirstModule } from '../shared/pipes/capitalize-first/capitalize-first.module';
+import { DialogsModule } from '../shared/components/dialogs/dialogs.module';
+import { MatFileInputModule } from '../shared/components/mat-file-input/mat-file-input.module';
 import { BlogComponent } from './blog.component';
 import { BlogRoutingModule } from './blog.routing';
 import { BlogService } from './blog.service';

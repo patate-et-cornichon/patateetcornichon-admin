@@ -5,37 +5,36 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { LayoutWrapperService } from '../core/layout/layout-wrapper.service';
 import { MessageService } from '../core/message/message.service';
-import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog.component';
-import { Recipe } from './recipes.interface';
-import { RecipesService } from './recipes.service';
+import { ConfirmationDialogComponent } from '../shared/components/dialogs/confirmation-dialog.component';
+import { Story } from './blog.interface';
+import { BlogService } from './blog.service';
 
 
 @Component({
-  selector: 'app-recipes',
-  templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.scss'],
+  selector: 'app-blog',
+  templateUrl: './blog.component.html',
+  styleUrls: ['./blog.component.scss'],
 })
-export class RecipesComponent implements OnInit {
+export class BlogComponent implements OnInit {
   displayedColumns: string[] = [
     'main_picture',
     'full_title',
     'created',
-    'categories',
     'comments_count',
     'published',
     'actions',
   ];
   resultsLength = 0;
   pageSize = 20;
-  data: Recipe[] = [];
+  data: Story[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private recipesService: RecipesService,
+    private blogService: BlogService,
     private messageService: MessageService,
     private dialog: MatDialog,
-    private layoutWrapperService: LayoutWrapperService,
+    private layoutWrapperServer: LayoutWrapperService,
   ) {
   }
 
@@ -51,18 +50,18 @@ export class RecipesComponent implements OnInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          this.layoutWrapperService.setLoadingState(true);
-          return this.recipesService.getRecipes(this.paginator.pageIndex + 1);
+          this.layoutWrapperServer.setLoadingState(true);
+          return this.blogService.getStories(this.paginator.pageIndex + 1);
         }),
         map(data => {
           // Flip flag to show that loading has finished.
-          this.layoutWrapperService.setLoadingState(false);
+          this.layoutWrapperServer.setLoadingState(false);
           this.resultsLength = data.count;
 
           return data.results;
         }),
         catchError(() => {
-          this.layoutWrapperService.setLoadingState(false);
+          this.layoutWrapperServer.setLoadingState(false);
           return observableOf([]);
         }),
       )
@@ -70,32 +69,32 @@ export class RecipesComponent implements OnInit {
   }
 
   /**
-   * Update the selected recipe with a new published value
+   * Update the selected story with a new published value
    *
    * @param e
-   * @param recipeSlug
+   * @param storySlug
    */
-  togglePublished(e: MatSlideToggleChange, recipeSlug: string) {
+  togglePublished(e: MatSlideToggleChange, storySlug: string) {
     const data: object = {
       published: e.checked,
     };
-    this.recipesService.patchRecipe(recipeSlug, data)
+    this.blogService.patchStory(storySlug, data)
       .subscribe(
-        () => this.messageService.showMessage('Recette mise à jour !'),
+        () => this.messageService.showMessage('Article mis à jour !'),
       );
   }
 
   /**
-   * Delete recipe from server and update recipes data
+   * Delete story from server and update stories data
    *
-   * @param recipe
+   * @param story
    */
-  deleteRecipe(recipe: Recipe) {
+  deleteStory(story: Story) {
     // Open a confirmation dialog
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: 'Supprimer ?',
-        content: `Confirmes-tu la supression de la recette <strong>${recipe.full_title}</strong> ?`,
+        content: `Confirmes-tu la supression de l'article <strong>${story.full_title}</strong> ?`,
       },
     });
 
@@ -104,12 +103,12 @@ export class RecipesComponent implements OnInit {
       .afterClosed()
       .subscribe(result => {
           if (result) {
-            this.recipesService
-              .deleteRecipe(recipe.slug)
+            this.blogService
+              .deleteStory(story.slug)
               .subscribe(
                 () => {
-                  this.messageService.showMessage('Recette supprimée !');
-                  this.data = this.data.filter(e => e.slug !== recipe.slug);
+                  this.messageService.showMessage('Article supprimé !');
+                  this.data = this.data.filter(e => e.slug !== story.slug);
                 },
               );
           }
@@ -117,4 +116,3 @@ export class RecipesComponent implements OnInit {
       );
   }
 }
-
