@@ -5,13 +5,27 @@ import {
   RecipesManagementCreateComponent,
   RecipesManagementEditComponent,
 } from './management/recipes-management.component';
+import { RecipesSelectionsComponent } from './recipes-selections/recipes-selections.component';
 import { RecipesComponent } from './recipes.component';
 
 
 const routes: Routes = [
-  {path: '', component: RecipesComponent},
-  {path: 'add', component: RecipesManagementCreateComponent},
-  {path: ':slug', component: RecipesManagementEditComponent},
+  {
+    path: '',
+    component: RecipesComponent,
+  },
+  {
+    path: 'selections',
+    component: RecipesSelectionsComponent,
+  },
+  {
+    path: 'add',
+    component: RecipesManagementCreateComponent,
+  },
+  {
+    path: ':slug',
+    component: RecipesManagementEditComponent,
+  },
 ];
 
 @NgModule({

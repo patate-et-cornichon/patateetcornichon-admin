@@ -33,6 +33,10 @@ export class NavComponent implements OnInit {
           title: 'Ajouter',
           link: '/recipes/add',
         },
+        {
+          title: 'Selections',
+          link: '/recipes/selections',
+        },
       ],
     },
     {
