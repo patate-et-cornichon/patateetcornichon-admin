@@ -79,4 +79,11 @@ export class RecipesService {
   getUnits(): Observable<Unit[]> {
     return this.http.get<Unit[]>(`${environment.baseUrl}/recipes/units/`);
   }
+
+  /**
+   * GET: Get recipe selections
+   */
+  getSelections(): Observable<Unit[]> {
+    return this.http.get<Unit[]>(`${environment.baseUrl}/recipes/units/`);
+  }
 }

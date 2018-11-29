@@ -68,10 +68,35 @@ export interface Recipe {
 export interface PaginatedRecipes {
   count: number;
   num_pages: number;
+  current_page: number;
+  next: string;
+  previous: string;
+  results: Recipe[];
+}
+
+export interface Selection {
+  id: number;
+  slug: string;
+  published: boolean;
+  created: number;
+  updated: number;
+  title: string;
+  description: string;
+  meta_description: string;
+  picture_thumbs: {
+    large: string;
+    extra_large: string;
+  };
+  recipes: Recipe[];
+}
+
+export interface PaginatedSelection {
+  count: number;
+  num_pages: number;
   page_size: number;
   current_page: number;
   previous_page: number;
   next: string;
   previous: string;
-  results: Recipe[];
+  results: Selection[];
 }
