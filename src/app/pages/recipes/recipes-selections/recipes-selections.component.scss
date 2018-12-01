@@ -1,0 +1,36 @@
+.custom-toolbar {
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.list-container {
+  margin-bottom: 40px;
+  position: relative;
+
+  .list-table-container {
+    position: relative;
+
+    table {
+      width: 100%;
+
+      .picture {
+        width: 80px;
+        margin-top: 8px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}

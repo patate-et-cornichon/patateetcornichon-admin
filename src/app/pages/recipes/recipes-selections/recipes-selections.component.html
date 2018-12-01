@@ -1,1 +1,90 @@
-hello world
+<div fxLayout="row" fxLayoutAlign="space-between center" class="custom-toolbar">
+  <h1 class="mat-h1">Selections</h1>
+  <a routerLink="/recipes/selections/add">
+    <button mat-mini-fab color="accent">
+      <mat-icon aria-label="Ajouter une sélection">add</mat-icon>
+    </button>
+  </a>
+</div>
+
+<div class="list-container mat-elevation-z8" [hidden]="!data.length">
+  <div class="list-table-container">
+    <table mat-table [dataSource]="data" class="list-table">
+
+      <!-- Picture Column -->
+      <ng-container matColumnDef="picture">
+        <th mat-header-cell *matHeaderCellDef>Image</th>
+        <td mat-cell *matCellDef="let row">
+          <a [routerLink]="['/recpes/selections', row.slug]">
+            <img [src]="row.picture_thumbs.mini" alt="" class="picture mat-elevation-z3">
+          </a>
+        </td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Titre</th>
+        <td mat-cell *matCellDef="let row">
+          <a mat-button color="primary" [routerLink]="['/recipes/selections', row.slug]">{{ row.title }}</a>
+        </td>
+      </ng-container>
+
+      <!-- Created Column -->
+      <ng-container matColumnDef="created">
+        <th mat-header-cell *matHeaderCellDef disableClear>
+          Créée
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.created * 1000 | date }}</td>
+      </ng-container>
+
+      <!-- Recipes count Column -->
+      <ng-container matColumnDef="recipes_count">
+        <th mat-header-cell *matHeaderCellDef>Recettes</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.recipes.length }}
+        </td>
+      </ng-container>
+
+      <!-- Published Column -->
+      <ng-container matColumnDef="published">
+        <th mat-header-cell *matHeaderCellDef>Publiée</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-slide-toggle
+            [checked]="row.published"
+            (change)="togglePublished($event, row.slug)"
+          >
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item [routerLink]="['/recipes/selections', row.slug]">
+              <mat-icon aria-label="Voir">remove_red_eye</mat-icon>
+              <span>Éditer</span>
+            </a>
+            <button mat-menu-item (click)="deleteSelection(row)">
+              <mat-icon color="warn" aria-label="Supprimer">delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator
+      [length]="resultsLength"
+      [pageSize]="pageSize"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</div>

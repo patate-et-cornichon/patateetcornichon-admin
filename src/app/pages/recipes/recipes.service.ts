@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Category, Ingredient, PaginatedRecipes, Recipe, Tag, Unit } from './recipes.interface';
+import { Category, Ingredient, PaginatedRecipes, PaginatedSelections, Recipe, Tag, Unit } from './recipes.interface';
 import { RecipesModule } from './recipes.module';
 
 
@@ -83,7 +83,30 @@ export class RecipesService {
   /**
    * GET: Get recipe selections
    */
-  getSelections(): Observable<Unit[]> {
-    return this.http.get<Unit[]>(`${environment.baseUrl}/recipes/units/`);
+  getSelections(parameters: any): Observable<PaginatedSelections> {
+    const params = new HttpParams({
+      fromObject: parameters,
+    });
+    return this.http.get<PaginatedSelections>(
+      `${environment.baseUrl}/recipes/selections/`, {
+        params,
+      },
+    );
+  }
+
+  /**
+   * PATCH: update selection
+   */
+  patchSelection(slug: string, data: Object): Observable<Selection> {
+    return this.http.patch<Selection>(
+      `${environment.baseUrl}/recipes/selections/${slug}/`, data,
+      );
+  }
+
+  /**
+   * DELETE: delete a selection from server
+   */
+  deleteSelection(slug: string): Observable<null> {
+    return this.http.delete<null>(`${environment.baseUrl}/recipes/selections/${slug}/`);
   }
 }

@@ -30,7 +30,7 @@ import { CapitalizeFirstModule } from '../../shared/pipes/capitalize-first/capit
 import {
   RecipesManagementCreateComponent,
   RecipesManagementEditComponent,
-} from './management/recipes-management.component';
+} from './recipes-management/recipes-management.component';
 import { RecipesSelectionsComponent } from './recipes-selections/recipes-selections.component';
 import { RecipesComponent } from './recipes.component';
 import { RecipesRoutingModule } from './recipes.routing';

@@ -90,7 +90,7 @@ export interface Selection {
   recipes: Recipe[];
 }
 
-export interface PaginatedSelection {
+export interface PaginatedSelections {
   count: number;
   num_pages: number;
   page_size: number;

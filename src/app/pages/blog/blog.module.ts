@@ -27,10 +27,10 @@ import {
 import { DialogsModule } from '../../shared/components/dialogs/dialogs.module';
 import { MatFileInputModule } from '../../shared/components/mat-file-input/mat-file-input.module';
 import { CapitalizeFirstModule } from '../../shared/pipes/capitalize-first/capitalize-first.module';
+import { BlogManagementCreateComponent, BlogManagementEditComponent } from './blog-management/blog-management.component';
 import { BlogComponent } from './blog.component';
 import { BlogRoutingModule } from './blog.routing';
 import { BlogService } from './blog.service';
-import { BlogManagementCreateComponent, BlogManagementEditComponent } from './management/blog-management.component';
 
 
 @NgModule({

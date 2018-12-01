@@ -32,9 +32,9 @@ export class RecipesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private dialog: MatDialog,
     private recipesService: RecipesService,
     private messageService: MessageService,
-    private dialog: MatDialog,
     private layoutWrapperService: LayoutWrapperService,
   ) {
   }
