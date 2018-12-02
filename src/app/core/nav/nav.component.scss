@@ -7,7 +7,7 @@
   background: transparent;
 
   .sidenav {
-    width: 220px;
+    width: 240px;
 
     .nav-logo {
       a {
@@ -50,6 +50,20 @@
     font-size: 0.7em;
     font-weight: lighter;
   }
+}
+
+.mat-expansion-panel-header {
+  font-size: 17px;
+
+  /deep/ {
+    .mat-expansion-indicator {
+      height: 25px;
+    }
+  }
+}
+
+.mat-expansion-panel-header-title {
+  align-items: center;
 }
 
 .mat-toolbar.mat-primary {

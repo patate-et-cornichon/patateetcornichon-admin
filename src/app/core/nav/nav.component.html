@@ -21,7 +21,7 @@
         <mat-expansion-panel class="mat-elevation-z0" *ngFor="let nav of navigation;">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <mat-icon matListIcon>{{ nav.header.icon }}</mat-icon> {{ nav.header.title }}
+              <mat-icon matListIcon>{{ nav.header.icon }}</mat-icon> <span>{{ nav.header.title }}</span>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <a *ngFor="let item of nav.links" mat-list-item [routerLink]="[item.link]">{{ item.title }}</a>
