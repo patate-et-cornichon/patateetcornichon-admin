@@ -24,6 +24,7 @@ import {
   MatTableModule,
 } from '@angular/material';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DialogsModule } from '../../shared/components/dialogs/dialogs.module';
 import { MatFileInputModule } from '../../shared/components/mat-file-input/mat-file-input.module';
 import { CapitalizeFirstModule } from '../../shared/pipes/capitalize-first/capitalize-first.module';
@@ -31,6 +32,10 @@ import {
   RecipesManagementCreateComponent,
   RecipesManagementEditComponent,
 } from './recipes-management/recipes-management.component';
+import {
+  RecipesSelectionsManagementCreateComponent,
+  RecipesSelectionsManagementEditComponent,
+} from './recipes-selections/recipes-selections-management/recipes-selections-management';
 import { RecipesSelectionsComponent } from './recipes-selections/recipes-selections.component';
 import { RecipesComponent } from './recipes.component';
 import { RecipesRoutingModule } from './recipes.routing';
@@ -61,6 +66,7 @@ import { RecipesService } from './recipes.service';
     MatCheckboxModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    DragDropModule,
     FlexLayoutModule,
 
     RecipesRoutingModule,
@@ -73,6 +79,8 @@ import { RecipesService } from './recipes.service';
     RecipesManagementCreateComponent,
     RecipesManagementEditComponent,
     RecipesSelectionsComponent,
+    RecipesSelectionsManagementCreateComponent,
+    RecipesSelectionsManagementEditComponent,
   ],
   providers: [
     RecipesService,

@@ -5,6 +5,10 @@ import {
   RecipesManagementCreateComponent,
   RecipesManagementEditComponent,
 } from './recipes-management/recipes-management.component';
+import {
+  RecipesSelectionsManagementCreateComponent,
+  RecipesSelectionsManagementEditComponent,
+} from './recipes-selections/recipes-selections-management/recipes-selections-management';
 import { RecipesSelectionsComponent } from './recipes-selections/recipes-selections.component';
 import { RecipesComponent } from './recipes.component';
 
@@ -17,6 +21,14 @@ const routes: Routes = [
   {
     path: 'selections',
     component: RecipesSelectionsComponent,
+  },
+  {
+    path: 'selections/add',
+    component: RecipesSelectionsManagementCreateComponent,
+  },
+  {
+    path: 'selections/:slug',
+    component: RecipesSelectionsManagementEditComponent,
   },
   {
     path: 'add',

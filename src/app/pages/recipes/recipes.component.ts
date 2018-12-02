@@ -52,7 +52,9 @@ export class RecipesComponent implements OnInit {
         startWith({}),
         switchMap(() => {
           this.layoutWrapperService.setLoadingState(true);
-          return this.recipesService.getRecipes(this.paginator.pageIndex + 1);
+          return this.recipesService.getRecipes({
+            page: this.paginator.pageIndex + 1,
+          });
         }),
         map(data => {
           // Flip flag to show that loading has finished.

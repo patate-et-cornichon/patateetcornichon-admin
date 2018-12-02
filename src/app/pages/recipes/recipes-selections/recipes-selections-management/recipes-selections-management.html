@@ -1,0 +1,131 @@
+<h1 class="mat-h1">{{ pageTitle }}</h1>
+
+<form [formGroup]="formGroup" (submit)="saveSelection()" *ngIf="!editMode || selection">
+  <mat-vertical-stepper #stepper (selectionChange)="selectionChange($event)">
+    <!-- First step -->
+    <mat-step>
+      <ng-template matStepLabel>Général</ng-template>
+
+      <div fxLayout="column">
+        <!-- Published field -->
+        <mat-checkbox formControlName="published">Publié ?</mat-checkbox>
+
+        <!-- Title field -->
+        <mat-form-field>
+          <input matInput placeholder="Titre" formControlName="title" required (keyup)="changeSlug()">
+        </mat-form-field>
+
+        <!-- Slug field -->
+        <mat-form-field>
+          <input matInput placeholder="Slug" formControlName="slug" required>
+        </mat-form-field>
+
+        <!-- Images fields -->
+        <div fxLayout="row" fxLayoutGap="40px">
+          <mat-form-field fxFlex="1 1 auto">
+            <app-mat-file-input
+              formControlName="picture"
+              placeholder="Image"
+              required
+            >
+            </app-mat-file-input>
+          </mat-form-field>
+          <div fxFlex="1 1 auto"></div>
+        </div>
+
+        <div>
+          <button mat-stroked-button matStepperNext type="button">Suivant</button>
+        </div>
+      </div>
+    </mat-step>
+
+    <!-- Second step -->
+    <mat-step>
+      <ng-template matStepLabel>Contenu</ng-template>
+
+      <!-- Description field -->
+      <div fxLayout="column" class="editor-wrapper">
+        <div id="editor"></div>
+        <input type="hidden" id="introduction" formControlName="description">
+      </div>
+
+      <div>
+        <button mat-stroked-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+
+    <!-- Third step -->
+    <mat-step>
+      <ng-template matStepLabel>Recettes</ng-template>
+
+      <div fxLayout="column">
+        <!-- Recipes list -->
+        <mat-form-field>
+          <input matInput placeholder="Chercher une recette..." [matAutocomplete]="auto" formControlName="recipe">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="appendRecipe($event)">
+            <mat-option *ngFor="let recipe of filteredRecipes" [value]="recipe">
+              <img alt="" class="autocomplete-img" [src]="recipe.main_picture_thumbs.mini">
+              <span>{{ recipe.full_title }}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <div
+          class="recipes-list"
+          cdkDropList
+          *ngIf="selectedRecipes.length"
+          (cdkDropListDropped)="dropRecipe($event)"
+        >
+          <div
+            class="recipes-list-item"
+            cdkDrag
+            *ngFor="let recipe of selectedRecipes"
+            [cdkDragData]="recipe"
+          >
+            <img [src]="recipe.picture" [alt]="recipe.title">
+            <span>{{ recipe.title }}</span>
+            <button mat-icon-button (click)="removeRecipe(recipe.id)">
+              <mat-icon aria-label="Supprimer recette">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button mat-stroked-button matStepperNext type="button">Suivant</button>
+      </div>
+    </mat-step>
+
+    <!-- Fourth step -->
+    <mat-step>
+      <ng-template matStepLabel>SEO</ng-template>
+      <div fxLayout="column">
+        <mat-form-field>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            placeholder="Meta description"
+            formControlName="meta_description"
+            #meta_description
+            maxlength="300"
+            required
+          >
+          </textarea>
+          <mat-hint align="end">{{ meta_description.value.length }} / 300</mat-hint>
+        </mat-form-field>
+      </div>
+      <div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="isPosting">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+      <mat-error *ngIf="hasError" class="form-error">
+        Une erreur est présente dans le formulaire
+      </mat-error>
+    </mat-step>
+  </mat-vertical-stepper>
+</form>

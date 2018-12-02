@@ -16,6 +16,7 @@ import { RecipesService } from '../recipes.service';
 
 
 export class RecipesManagementBaseComponent implements OnInit {
+  pageTitle: string;
   isPosting = false;
   hasError = false;
   editMode = false;
@@ -36,6 +37,7 @@ export class RecipesManagementBaseComponent implements OnInit {
   filteredUnits: string[];
   unitsList: string[] = [];
 
+  editor: Quill;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formGroup = new FormGroup({
     published: new FormControl(false),
@@ -87,8 +89,6 @@ export class RecipesManagementBaseComponent implements OnInit {
       Validators.required,
     ]),
   });
-
-  editor: Quill;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 

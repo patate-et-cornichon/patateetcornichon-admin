@@ -3,7 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Category, Ingredient, PaginatedRecipes, PaginatedSelections, Recipe, Tag, Unit } from './recipes.interface';
+import {
+  Category,
+  Ingredient,
+  PaginatedRecipes,
+  PaginatedSelections,
+  Recipe,
+  Selection,
+  Tag,
+  Unit,
+} from './recipes.interface';
 import { RecipesModule } from './recipes.module';
 
 
@@ -18,8 +27,13 @@ export class RecipesService {
   /**
    * GET: get all recipes from the server
    */
-  getRecipes(page: number = 1): Observable<PaginatedRecipes> {
-    return this.http.get<PaginatedRecipes>(`${environment.baseUrl}/recipes/?page=${page}`);
+  getRecipes(parameters: any): Observable<PaginatedRecipes> {
+    const params = new HttpParams({
+      fromObject: parameters,
+    });
+    return this.http.get<PaginatedRecipes>(`${environment.baseUrl}/recipes/`, {
+      params,
+    });
   }
 
   /**
@@ -95,12 +109,26 @@ export class RecipesService {
   }
 
   /**
+   * GET: get a single selection
+   */
+  getSelection(slug): Observable<Selection> {
+    return this.http.get<Selection>(`${environment.baseUrl}/recipes/selections/${slug}/`);
+  }
+
+  /**
+   * POST: post a new selection
+   */
+  postSelection(data: Selection): Observable<Selection> {
+    return this.http.post<Selection>(`${environment.baseUrl}/recipes/selections/`, data);
+  }
+
+  /**
    * PATCH: update selection
    */
   patchSelection(slug: string, data: Object): Observable<Selection> {
     return this.http.patch<Selection>(
       `${environment.baseUrl}/recipes/selections/${slug}/`, data,
-      );
+    );
   }
 
   /**
